@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Venda {
-    private Long id;
+    private final Long id;
     private LocalDateTime data;
     private List<ItemNota> itens;
     private double valorTotal;

@@ -1,7 +1,7 @@
 package br.com.grupo03.projetopoo.entity;
 
 public class Produto {
-    private Long id;
+    private final Long id;
     private String marca;
     private String codigoBarras;
     private int quantidade;
@@ -17,7 +17,7 @@ public class Produto {
         this.quantidade = 0;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public String getMarca(){

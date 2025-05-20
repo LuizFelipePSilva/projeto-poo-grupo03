@@ -17,9 +17,13 @@ public class ItemNota {
         return quantidade;
     }
     public double getValorUnitario(){
+        return valorUnitario;
+    }
+    public double getValorTotal(){
         return quantidade * valorUnitario;
     }
-    public void setQuantidade(){
+
+    public void setQuantidade(int quantidade){
         if(quantidade <= 0){
             throw new IllegalArgumentException("Quantidade deve ser maior que zero");
         }

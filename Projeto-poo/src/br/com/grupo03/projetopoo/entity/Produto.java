@@ -17,8 +17,74 @@ public class Produto {
         this.quantidade = 0;
     }
 
+    public long getId() {
+        return id;
+    }
+    public String getMarca(){
+        return marca;
+    }
+    public String getCodigoBarras(){
+        return codigoBarras;
+    }
+    public int getQuantidade(){
+        return quantidade;
+    }
     public double getPreco(){
         return preco;
     }
+    public Tipo getTipo(){
+        return tipo;
+    }
 
+    public void setMarca(String marca) {
+        if (marca == null || marca.trim().isEmpty()) {
+            throw new IllegalArgumentException("Marca não pode ser vazia");
+        }
+        this.marca = marca;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        if (codigoBarras == null || codigoBarras.trim().isEmpty()) {
+            throw new IllegalArgumentException("Código de barras não pode ser vazio");
+        }
+        this.codigoBarras = codigoBarras;
+    }
+
+    public void setQuantidade(int quantidade) {
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("Quantidade não pode ser negativa");
+        }
+        this.quantidade = quantidade;
+    }
+
+    public void setPreco(double preco) {
+        if (preco <= 0) {
+            throw new IllegalArgumentException("Preço deve ser maior que zero");
+        }
+        this.preco = preco;
+    }
+
+    public void setTipo(Tipo tipo) {
+        if (tipo == null) {
+            throw new IllegalArgumentException("Tipo não pode ser nulo");
+        }
+        this.tipo = tipo;
+    }
+
+    public void adicionarEstoque(int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+        }
+        this.quantidade += quantidade;
+    }
+
+    public void removerEstoque(int quantidade) {
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+        }
+        if (this.quantidade < quantidade) {
+            throw new IllegalStateException("Quantidade em estoque insuficiente");
+        }
+        this.quantidade -= quantidade;
+    }
 }

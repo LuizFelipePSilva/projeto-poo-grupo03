@@ -25,4 +25,18 @@ public class Tipo {
     public FormaVenda getFormaVenda() {
         return formaVenda;
     }
+
+    public void setNome(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nome não pode ser vazio");
+        }
+        this.nome = nome;
+    }
+
+    public void setFormaVenda(FormaVenda formaVenda) {
+        if (formaVenda == null) {
+            throw new IllegalArgumentException("Forma de venda não pode ser nula");
+        }
+        this.formaVenda = formaVenda;
+    }
 }

@@ -30,7 +30,8 @@ public class ItemNota {
         }
             this.quantidade = quantidade;
         }
-        // Função para calcular o total da nota
+    
+    // Função para calcular o total da nota
     public void calcularTotal(){
         this.valorTotal = this.quantidade * this.valorUnitario;
     }

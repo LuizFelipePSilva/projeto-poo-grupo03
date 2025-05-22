@@ -88,5 +88,13 @@ public class Produto {
         this.quantidade -= quantidade;
     }
 
-    // Adicionar atualizarProduto(), verProdutos (), pesquisarItem(), pesquisarCodigo();
+    // Adicionar atualizarProduto();
+    public void atualizarProduto(String novaMarca, String novoCodigoBarras, double novoPreco, Tipo novoTipo, int novaQuantidade) {
+        setMarca(novaMarca);
+        setCodigoBarras(novoCodigoBarras);
+        setPreco(novoPreco);
+        setTipo(novoTipo);
+        setQuantidade(novaQuantidade);
+    }
+
 }

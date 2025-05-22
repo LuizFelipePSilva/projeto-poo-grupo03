@@ -87,4 +87,6 @@ public class Produto {
         }
         this.quantidade -= quantidade;
     }
+
+    // Adicionar atualizarProduto(), verProdutos (), pesquisarItem(), pesquisarCodigo();
 }

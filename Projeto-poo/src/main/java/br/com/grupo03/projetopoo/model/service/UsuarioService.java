@@ -2,11 +2,12 @@ package br.com.grupo03.projetopoo.model.service;
 
 import br.com.grupo03.projetopoo.entity.Usuario;
 import br.com.grupo03.projetopoo.model.dao.UsuarioDAO;
+import br.com.grupo03.projetopoo.model.service.interfaces.IUsuarioService;
 
 import java.util.List;
 import java.util.Objects;
 
-public class UsuarioService {
+public class UsuarioService implements IUsuarioService {
     private final UsuarioDAO dao = new UsuarioDAO();
 
     public Usuario saveUser(Usuario user) {

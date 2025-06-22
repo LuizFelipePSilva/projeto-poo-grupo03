@@ -1,6 +1,7 @@
 package br.com.grupo03.projetopoo.model.dao;
 
 import br.com.grupo03.projetopoo.entity.Usuario;
+import br.com.grupo03.projetopoo.model.dao.interfaces.IUsuarioDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -8,7 +9,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class UsuarioDAO {
+public class UsuarioDAO implements IUsuarioDAO {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("projetoPOO");
 
     public Usuario save(Usuario user) {

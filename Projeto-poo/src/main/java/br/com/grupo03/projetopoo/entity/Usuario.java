@@ -73,4 +73,15 @@ public class Usuario {
         if (tipo == null) throw new IllegalArgumentException("Tipo de usuário não pode ser nulo");
         this.tipo = tipo;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", login='" + login + '\'' +
+                ", senha='" + senha + '\'' +
+                ", tipo=" + tipo +
+                '}';
+    }
 }

@@ -39,6 +39,13 @@ public class Tipo {
         this.nome = nome;
     }
 
+    public void setId(Long id) {
+        if (id == null || id <= 0) {
+            throw new IllegalArgumentException("ID inválido. O ID deve ser um número positivo e não nulo.");
+        }
+        this.id = id;
+    }
+
     public FormaVenda getFormaVenda() {
         return formaVenda;
     }

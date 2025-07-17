@@ -1,4 +1,4 @@
-package br.com.grupo03.projetopoo.entity;
+package br.com.grupo03.projetopoo.model.entity;
 
 import jakarta.persistence.*;
 

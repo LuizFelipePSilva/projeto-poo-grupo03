@@ -1,6 +1,6 @@
 package br.com.grupo03.projetopoo.model.dao;
 
-import br.com.grupo03.projetopoo.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.Usuario;
 import br.com.grupo03.projetopoo.model.dao.interfaces.IUsuarioDAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

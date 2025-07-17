@@ -1,6 +1,6 @@
-package br.com.grupo03.projetopoo.entity;
+package br.com.grupo03.projetopoo.model.entity;
 
-import br.com.grupo03.projetopoo.entity.enums.TipoUsuario;
+import br.com.grupo03.projetopoo.model.entity.enums.TipoUsuario;
 import jakarta.persistence.*;
 
 @Entity

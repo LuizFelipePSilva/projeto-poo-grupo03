@@ -1,6 +1,6 @@
 package br.com.grupo03.projetopoo.model.dao;
 
-import br.com.grupo03.projetopoo.entity.Venda;
+import br.com.grupo03.projetopoo.model.entity.Venda;
 import br.com.grupo03.projetopoo.model.dao.interfaces.VendaInterface;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;

@@ -1,6 +1,6 @@
-package br.com.grupo03.projetopoo.entity;
+package br.com.grupo03.projetopoo.model.entity;
 
-import br.com.grupo03.projetopoo.entity.enums.FormaVenda;
+import br.com.grupo03.projetopoo.model.entity.enums.FormaVenda;
 import jakarta.persistence.*;
 
 @Entity

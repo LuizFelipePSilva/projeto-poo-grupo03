@@ -1,7 +1,7 @@
 package br.com.grupo03.projetopoo.model.dao.interfaces;
 import java.util.List;
-import br.com.grupo03.projetopoo.entity.Produto;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Produto;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
 
 public interface ProdutoInterface {
     Produto findById(Long id);

@@ -1,5 +1,5 @@
 package br.com.grupo03.projetopoo.model.service.interfaces;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
 import java.util.List;
 
 public interface TipoInterfaceService {

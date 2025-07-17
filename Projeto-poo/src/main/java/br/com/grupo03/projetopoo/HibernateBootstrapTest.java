@@ -1,7 +1,7 @@
 package br.com.grupo03.projetopoo;
 
-import br.com.grupo03.projetopoo.entity.*;
-import br.com.grupo03.projetopoo.entity.enums.*;
+import br.com.grupo03.projetopoo.model.entity.*;
+import br.com.grupo03.projetopoo.model.entity.enums.*;
 import jakarta.persistence.*;
 
 public class HibernateBootstrapTest {

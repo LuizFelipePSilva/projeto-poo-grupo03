@@ -1,5 +1,5 @@
 package br.com.grupo03.projetopoo.model.dao;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.dao.interfaces.TipoInterface;
 import jakarta.persistence.*;
 import java.util.List;

@@ -1,7 +1,6 @@
 package br.com.grupo03.projetopoo.model.service.interfaces;
 
-import br.com.grupo03.projetopoo.entity.Produto;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Produto;
 
 import java.util.List;
 

@@ -4,11 +4,11 @@
              version="3.0">
 
     <persistence-unit name="projetoPOO" transaction-type="RESOURCE_LOCAL">
-        <class>br.com.grupo03.projetopoo.entity.Usuario</class>
-        <class>br.com.grupo03.projetopoo.entity.Produto</class>
-        <class>br.com.grupo03.projetopoo.entity.Tipo</class>
-        <class>br.com.grupo03.projetopoo.entity.ItemNota</class>
-        <class>br.com.grupo03.projetopoo.entity.Venda</class>
+        <class>br.com.grupo03.projetopoo.model.entity.Usuario</class>
+        <class>br.com.grupo03.projetopoo.model.entity.Produto</class>
+        <class>br.com.grupo03.projetopoo.model.entity.Tipo</class>
+        <class>br.com.grupo03.projetopoo.model.entity.ItemNota</class>
+        <class>br.com.grupo03.projetopoo.model.entity.Venda</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

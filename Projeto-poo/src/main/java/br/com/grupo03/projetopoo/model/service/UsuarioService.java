@@ -9,7 +9,13 @@ import java.util.Objects;
 
 public class UsuarioService implements IUsuarioService {
     private final UsuarioDAO dao = new UsuarioDAO();
-
+    public Usuario autenticar(Usuario user) {
+        Usuario existing = dao.findByLogin(user.getLogin());
+        if (existing == null || !existing.getSenha().equals(user.getSenha())) {
+            throw new IllegalArgumentException("Credenciais inválidas");
+        }
+        return existing;
+    }
     public Usuario saveUser(Usuario user) {
         Usuario existing = dao.findByLogin(user.getLogin());
         if (existing != null && !Objects.equals(existing.getId(), user.getId())) {

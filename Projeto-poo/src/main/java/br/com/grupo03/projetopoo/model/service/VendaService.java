@@ -1,8 +1,8 @@
 package br.com.grupo03.projetopoo.model.service;
 
-import br.com.grupo03.projetopoo.entity.ItemNota;
-import br.com.grupo03.projetopoo.entity.Produto;
-import br.com.grupo03.projetopoo.entity.Venda;
+import br.com.grupo03.projetopoo.model.entity.ItemNota;
+import br.com.grupo03.projetopoo.model.entity.Produto;
+import br.com.grupo03.projetopoo.model.entity.Venda;
 import br.com.grupo03.projetopoo.model.dao.VendaDAO;
 import br.com.grupo03.projetopoo.model.dao.interfaces.VendaInterface;
 import br.com.grupo03.projetopoo.model.service.interfaces.IVendaService;

@@ -1,11 +1,9 @@
 package br.com.grupo03.projetopoo.model.service;
-import br.com.grupo03.projetopoo.entity.Produto;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Produto;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
-import br.com.grupo03.projetopoo.model.service.TipoService;
 import br.com.grupo03.projetopoo.model.dao.TipoDAO;
 import br.com.grupo03.projetopoo.model.service.interfaces.ProdutoInterfaceService;
-import jakarta.persistence.*;
 
 import java.util.List;
 

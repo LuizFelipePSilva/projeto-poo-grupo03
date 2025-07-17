@@ -1,6 +1,6 @@
 package br.com.grupo03.projetopoo.model.dao.interfaces;
 
-import br.com.grupo03.projetopoo.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.Usuario;
 import java.util.List;
 
 public interface IUsuarioDAO {

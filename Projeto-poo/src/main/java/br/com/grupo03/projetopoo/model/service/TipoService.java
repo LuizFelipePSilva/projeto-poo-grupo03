@@ -1,5 +1,5 @@
 package br.com.grupo03.projetopoo.model.service;
-import br.com.grupo03.projetopoo.entity.Tipo;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.dao.TipoDAO;
 import br.com.grupo03.projetopoo.model.service.interfaces.TipoInterfaceService;
 

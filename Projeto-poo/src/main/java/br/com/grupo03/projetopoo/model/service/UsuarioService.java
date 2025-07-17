@@ -1,6 +1,6 @@
 package br.com.grupo03.projetopoo.model.service;
 
-import br.com.grupo03.projetopoo.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.Usuario;
 import br.com.grupo03.projetopoo.model.dao.UsuarioDAO;
 import br.com.grupo03.projetopoo.model.service.interfaces.IUsuarioService;
 

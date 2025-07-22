@@ -1,12 +1,13 @@
 package br.com.grupo03.projetopoo.model.service.interfaces;
 
-import br.com.grupo03.projetopoo.model.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.interfaces.IUsuario;
 import java.util.List;
 
 public interface IUsuarioService {
-    Usuario saveUser(Usuario user);
-    Usuario findById(Long id);
-    Usuario findByLogin(String login);
+    IUsuario autenticar(String login, String senha);
+    IUsuario saveUser(IUsuario user);
+    IUsuario findById(Long id);
+    IUsuario findByLogin(String login);
     void deleteUser(Long id);
-    List<Usuario> listAllUsers();
+    List<IUsuario> listAllUsers();
 }

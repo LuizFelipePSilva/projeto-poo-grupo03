@@ -21,12 +21,12 @@
          <children>
             <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="MERCADINHO" />
             <Separator />
-            <Button maxWidth="Infinity" text="Página Inicial" />
+            <Button maxWidth="Infinity" onAction="#paginaInicial" text="Página Inicial" />
             <Button maxWidth="Infinity" text="Estoque" />
             <Button maxWidth="Infinity" text="Carrinho" />
             <Button maxWidth="Infinity" text="Produtos" />
             <Button maxWidth="Infinity" text="Nota Fiscal" />
-            <Button maxWidth="Infinity" text="Admin" />
+            <Button maxWidth="Infinity" onAction="#paginaAdmin" text="Admin" />
             <Separator />
             <Button maxWidth="Infinity" text="Configurações" />
             <Button maxWidth="Infinity" text="Suporte" />

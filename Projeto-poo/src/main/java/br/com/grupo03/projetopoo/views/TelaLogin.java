@@ -24,7 +24,7 @@ public class TelaLogin extends Application
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stage.setTitle("Hello!");
+        stage.setTitle("Tela de Login");
         stage.setScene(scene);
         stage.show();
     }
@@ -36,7 +36,19 @@ public class TelaLogin extends Application
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stage.setTitle("Hello!");
+        stage.setTitle("Tela inicial");
+        stage.setScene(scene);
+        stage.show();
+    }
+    public static void admin(){
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/Admin.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 800, 600);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Tela de Admin");
         stage.setScene(scene);
         stage.show();
     }

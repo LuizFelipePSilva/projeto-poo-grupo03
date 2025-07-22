@@ -6,4 +6,10 @@ public class TelaPrincipalController {
     public void sair(){
         TelaLogin.telaLogin();
     }
+    public void paginaInicial(){
+        TelaLogin.telaPrincipal();
+    }
+    public void paginaAdmin(){
+        TelaLogin.admin();
+    }
 }

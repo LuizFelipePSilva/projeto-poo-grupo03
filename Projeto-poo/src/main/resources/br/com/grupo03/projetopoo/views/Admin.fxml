@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.VBox?>
+
+
+<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.grupo03.projetopoo.Controller.AdminController">
+   <left>
+      <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #1c2541;">
+         <padding>
+            <Insets bottom="20" left="10" right="10" top="20" />
+         </padding>
+         <children>
+            <Label style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;" text="MERCADINHO" />
+            <Separator />
+            <Button maxWidth="Infinity" onAction="#paginaInicial" text="Página Inicial" />
+            <Button maxWidth="Infinity" text="Estoque" />
+            <Button maxWidth="Infinity" text="Carrinho" />
+            <Button maxWidth="Infinity" text="Produtos" />
+            <Button maxWidth="Infinity" text="Nota Fiscal" />
+            <Button maxWidth="Infinity" onAction="#paginaAdmin" text="Admin" />
+            <Separator />
+            <Button maxWidth="Infinity" text="Configurações" />
+            <Button maxWidth="Infinity" text="Suporte" />
+            <Button maxWidth="Infinity" onAction="#sair" text="Sair" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <Label text="Eu sou lindo" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

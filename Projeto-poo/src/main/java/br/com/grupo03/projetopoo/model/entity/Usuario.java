@@ -1,11 +1,12 @@
 package br.com.grupo03.projetopoo.model.entity;
 
 import br.com.grupo03.projetopoo.model.entity.enums.TipoUsuario;
+import br.com.grupo03.projetopoo.model.entity.interfaces.IUsuario;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "login"))
-public class Usuario {
+public class Usuario implements IUsuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

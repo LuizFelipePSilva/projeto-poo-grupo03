@@ -1,42 +1,48 @@
 package br.com.grupo03.projetopoo.model.dao;
 
-import br.com.grupo03.projetopoo.model.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.enums.TipoUsuario;
 import br.com.grupo03.projetopoo.model.dao.interfaces.IUsuarioDAO;
+import br.com.grupo03.projetopoo.model.entity.Usuario;
+import br.com.grupo03.projetopoo.model.entity.interfaces.IUsuario;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
 public class UsuarioDAO implements IUsuarioDAO {
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("projetoPOO");
 
-    public Usuario save(Usuario user) {
-        EntityManager em = emf.createEntityManager();
+    private static EntityManager getEntityManager() {
+        return JPAUtil.getEntityManagerFactory();
+    }
+
+    @Override
+    public IUsuario save(IUsuario user) {
+        EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            if(user.getId() == null) em.persist(user);
-            else em.merge(user);
+            Usuario u = (Usuario) user;
+            if (u.getId() == null) em.persist(u);
+            else em.merge(u);
             em.getTransaction().commit();
-            return user;
-        }
-        finally {
-            em.close();
-        }
-    }
-    public Usuario findById(Long id){
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(Usuario.class, id);
-        }
-        finally {
+            return u;
+        } finally {
             em.close();
         }
     }
 
-    public Usuario findByLogin(String login) {
-        EntityManager em = emf.createEntityManager();
+    @Override
+    public IUsuario findById(Long id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Usuario.class, id);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public IUsuario findByLogin(String login) {
+        EntityManager em = getEntityManager();
         try {
             TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE u.login = :login", Usuario.class);
             query.setParameter("login", login);
@@ -47,8 +53,9 @@ public class UsuarioDAO implements IUsuarioDAO {
         }
     }
 
-    public Usuario findByName(String name) {
-        EntityManager em = emf.createEntityManager();
+    @Override
+    public IUsuario findByName(String name) {
+        EntityManager em = getEntityManager();
         try {
             TypedQuery<Usuario> query = em.createQuery("SELECT u FROM Usuario u WHERE u.nome = :nome", Usuario.class);
             query.setParameter("nome", name);
@@ -59,27 +66,27 @@ public class UsuarioDAO implements IUsuarioDAO {
         }
     }
 
-    public void remove(Usuario user) {
-        EntityManager em = emf.createEntityManager();
+    @Override
+    public void remove(IUsuario user) {
+        EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             Usuario u = em.find(Usuario.class, user.getId());
-            if(u != null) em.remove(u);
+            if (u != null) em.remove(u);
             em.getTransaction().commit();
-        }
-        finally {
+        } finally {
             em.close();
         }
     }
 
-    public List<Usuario> findAllUser(){
-        EntityManager em = emf.createEntityManager();
+    @Override
+    public List<IUsuario> findAllUser() {
+        EntityManager em = getEntityManager();
         try {
             TypedQuery<Usuario> query = em.createQuery("FROM Usuario", Usuario.class);
-            return query.getResultList();
-        }
-        finally {
-        em.close();
+            return query.getResultList().stream().map(u -> (IUsuario) u).toList();
+        } finally {
+            em.close();
         }
     }
 }

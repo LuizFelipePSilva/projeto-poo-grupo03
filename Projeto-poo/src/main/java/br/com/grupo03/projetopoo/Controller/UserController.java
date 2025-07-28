@@ -1,7 +1,6 @@
 package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.model.entity.interfaces.IUsuario;
-import br.com.grupo03.projetopoo.model.entity.Usuario;
 import br.com.grupo03.projetopoo.model.service.UsuarioService;
 import br.com.grupo03.projetopoo.model.service.interfaces.IUsuarioService;
 import br.com.grupo03.projetopoo.model.dao.Session;

@@ -31,8 +31,6 @@
             <Button maxWidth="Infinity" styleClass="side-menu-button" text="Nota Fiscal" />
             <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
             <Separator styleClass="separator" />
-            <Button maxWidth="Infinity" styleClass="side-menu-button" text="Configurações" />
-            <Button maxWidth="Infinity" styleClass="side-menu-button" text="Suporte" />
             <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
          </children>
       </VBox>
@@ -123,17 +121,6 @@
                      </font></Label>
                </VBox>
 
-               <VBox alignment="CENTER" spacing="15" styleClass="menu-item" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                  <ImageView fitHeight="64" fitWidth="64" styleClass="menu-icon">
-                     <image>
-                        <Image url="@../../../../../images/img_5.png" />
-                     </image>
-                  </ImageView>
-                  <Label styleClass="menu-label" text="SUPORTE" wrapText="true" maxWidth="120">
-                     <font>
-                        <Font size="11.0" />
-                     </font></Label>
-               </VBox>
             </GridPane>
          </children>
       </VBox>

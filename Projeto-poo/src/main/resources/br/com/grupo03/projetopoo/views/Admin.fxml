@@ -24,8 +24,6 @@
             <Button maxWidth="Infinity" styleClass="side-menu-button" text="Nota Fiscal" />
             <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
             <Separator styleClass="separator" />
-            <Button maxWidth="Infinity" styleClass="side-menu-button" text="Configurações" />
-            <Button maxWidth="Infinity" styleClass="side-menu-button" text="Suporte" />
             <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
          </children>
       </VBox>

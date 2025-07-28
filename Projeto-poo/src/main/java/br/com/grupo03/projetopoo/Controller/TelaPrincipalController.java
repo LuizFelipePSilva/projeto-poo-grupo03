@@ -1,6 +1,10 @@
 package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.views.TelaLogin;
+import javafx.fxml.FXML;
+
+import java.awt.event.ActionEvent;
+
 
 public class TelaPrincipalController {
     public void sair(){
@@ -11,5 +15,9 @@ public class TelaPrincipalController {
     }
     public void paginaAdmin(){
         TelaLogin.admin();
+    }
+
+    @FXML
+    private void abrirTelaProduto() { TelaLogin.buscarProdutos(); // Abre a tela BuscarProdutos.fxml
     }
 }

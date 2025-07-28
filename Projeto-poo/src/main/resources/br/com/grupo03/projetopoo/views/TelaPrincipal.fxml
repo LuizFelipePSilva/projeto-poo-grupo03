@@ -24,7 +24,7 @@
             <Button maxWidth="Infinity" onAction="#paginaInicial" text="Página Inicial" />
             <Button maxWidth="Infinity" text="Estoque" />
             <Button maxWidth="Infinity" text="Carrinho" />
-            <Button maxWidth="Infinity" text="Produtos" />
+            <Button maxWidth="Infinity" onAction="#abrirTelaProduto" text="Produtos" />
             <Button maxWidth="Infinity" text="Nota Fiscal" />
             <Button maxWidth="Infinity" onAction="#paginaAdmin" text="Admin" />
             <Separator />

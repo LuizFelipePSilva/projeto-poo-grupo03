@@ -17,4 +17,6 @@ public interface ProdutoInterfaceService {
     void aplicarDesconto(Long id, double percentual);
     double calcularValorTotalEstoque();
     boolean disponivelEstoque(Long id);
+    void criarProduto(String marca, String codigoBarras, double preco, Long tipoId);
+    void criarProdutoComEstoque(String marca, String codigoBarras, double preco, Long tipoId, int quantidade);
 }

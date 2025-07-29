@@ -1,8 +1,10 @@
 package br.com.grupo03.projetopoo.model.service;
-import br.com.grupo03.projetopoo.model.entity.Produto;
-import br.com.grupo03.projetopoo.model.entity.Tipo;
+
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
 import br.com.grupo03.projetopoo.model.dao.TipoDAO;
+import br.com.grupo03.projetopoo.model.entity.Produto;
+import br.com.grupo03.projetopoo.model.entity.Tipo;
+import br.com.grupo03.projetopoo.model.service.Factory.ProdutoFactory;
 import br.com.grupo03.projetopoo.model.service.interfaces.ProdutoInterfaceService;
 
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.List;
 public class ProdutoService implements ProdutoInterfaceService {
     private final ProdutoDAO produtoDAO = new ProdutoDAO();
     private final TipoDAO tipoDAO = new TipoDAO();
+
     @Override
     public Produto getById(Long id) {
         return produtoDAO.findById(id);
@@ -25,9 +28,40 @@ public class ProdutoService implements ProdutoInterfaceService {
         return produtoDAO.findByCodigoBarras(codigoBarras);
     }
 
+    // Novo método
+    public void criarProduto(String marca, String codigoBarras, double preco, Long tipoId) {
+        if (produtoDAO.findByCodigoBarras(codigoBarras) != null) {
+            throw new RuntimeException("Já existe um produto com este código de barras.");
+        }
+
+        Tipo tipo = tipoDAO.findById(tipoId);
+        if (tipo == null) {
+            throw new RuntimeException("Tipo de produto não encontrado.");
+        }
+
+        Produto produto = ProdutoFactory.criarProduto(marca, codigoBarras, preco, tipo);
+        produtoDAO.save(produto);
+    }
+
+    // Novo método
+    public void criarProdutoComEstoque(String marca, String codigoBarras, double preco, Long tipoId, int quantidade) {
+        if (produtoDAO.findByCodigoBarras(codigoBarras) != null) {
+            throw new RuntimeException("Já existe um produto com este código de barras.");
+        }
+
+        Tipo tipo = tipoDAO.findById(tipoId);
+        if (tipo == null) {
+            throw new RuntimeException("Tipo de produto não encontrado.");
+        }
+
+        Produto produto = ProdutoFactory.criarProdutoComEstoque(marca, codigoBarras, preco, tipo, quantidade);
+        produtoDAO.save(produto);
+    }
+
     @Override
     public void registerProduto(Produto produto) {
-        if(produtoDAO.findByCodigoBarras(produto.getCodigoBarras()) != null){
+        // Você pode manter esse método para compatibilidade, mas usar os novos de cima no lugar dele.
+        if (produtoDAO.findByCodigoBarras(produto.getCodigoBarras()) != null) {
             throw new RuntimeException("Já existe um produto com este código de barras.");
         }
         produtoDAO.save(produto);
@@ -74,7 +108,6 @@ public class ProdutoService implements ProdutoInterfaceService {
         produtoDAO.update(produtoExistente);
         return produtoExistente;
     }
-
 
     @Override
     public List<Produto> getAllProdutos() {

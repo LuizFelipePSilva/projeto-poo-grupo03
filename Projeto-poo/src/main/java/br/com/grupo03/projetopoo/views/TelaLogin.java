@@ -52,4 +52,18 @@ public class TelaLogin extends Application
         stage.setScene(scene);
         stage.show();
     }
+
+    public static void buscarProdutos() {
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/BuscarProdutos.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1185, 668);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Buscar Produtos");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

@@ -7,8 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.event.ActionEvent;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,10 +25,14 @@ public class BuscarProdutosController {
 
     @FXML
     public void initialize() {
-        colCodigo.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getCodigoBarras()));
-        colMarca.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getMarca()));
-        colPreco.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getPreco()));
-        colQuantidade.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getQuantidade()));
+        colCodigo.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getCodigoBarras()));
+        colMarca.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getMarca()));
+        colPreco.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getPreco()));
+        colQuantidade.setCellValueFactory(data ->
+                new javafx.beans.property.SimpleObjectProperty<>(data.getValue().getQuantidade()));
 
         carregarProdutos();
 
@@ -37,7 +41,7 @@ public class BuscarProdutosController {
 
     @FXML
     private void abrirTelaProduto(ActionEvent event) {
-        TelaLogin.buscarProdutos();  // Essa tela já é a de produtos
+        TelaLogin.buscarProdutos();
     }
 
     private void carregarProdutos() {
@@ -51,11 +55,26 @@ public class BuscarProdutosController {
         if (filtro == null || filtro.isEmpty()) {
             tabelaProdutos.setItems(listaProdutos);
         } else {
+            String filtroLower = filtro.toLowerCase();
             List<Produto> filtrados = listaProdutos.stream()
-                    .filter(p -> p.getCodigoBarras().toLowerCase().contains(filtro.toLowerCase()) ||
-                            p.getMarca().toLowerCase().contains(filtro.toLowerCase()))
+                    .filter(p ->
+                            (p.getCodigoBarras() != null && p.getCodigoBarras().toLowerCase().contains(filtroLower)) ||
+                                    (p.getMarca() != null && p.getMarca().toLowerCase().contains(filtroLower))
+                    )
                     .collect(Collectors.toList());
             tabelaProdutos.setItems(FXCollections.observableArrayList(filtrados));
         }
     }
+    public void sair(){
+        TelaLogin.telaLogin();
+    }
+    public void paginaInicial(){
+        TelaLogin.telaPrincipal();
+    }
+    public void paginaAdmin(){
+        TelaLogin.admin();
+    }
+    public void voltaTelaInicial(){TelaLogin.telaPrincipal();}
+    //public void abrirCarrinho { TelaLogin.Carrinho}
+
 }

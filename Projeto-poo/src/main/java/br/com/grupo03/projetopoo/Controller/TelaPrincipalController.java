@@ -16,8 +16,6 @@ public class TelaPrincipalController {
     public void paginaAdmin(){
         TelaLogin.admin();
     }
-
-    @FXML
-    private void abrirTelaProduto() { TelaLogin.buscarProdutos(); // Abre a tela BuscarProdutos.fxml
+    public void abrirTelaProduto() { TelaLogin.buscarProdutos(); // Abre a tela BuscarProdutos.fxml
     }
 }

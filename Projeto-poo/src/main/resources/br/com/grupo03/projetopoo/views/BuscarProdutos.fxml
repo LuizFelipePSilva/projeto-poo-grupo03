@@ -24,9 +24,9 @@
                 <Separator styleClass="separator" />
                 <Button maxWidth="Infinity" onAction="#paginaInicial" styleClass="side-menu-button" text="Página Inicial" />
                 <Button maxWidth="Infinity" styleClass="side-menu-button" text="Estoque" />
-                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Carrinho" />
-                <Button maxWidth="Infinity" onAction="#abrirTelaProduto" styleClass="side-menu-button" text="Produtos" />
-                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Nota Fiscal" />
+                <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
+                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Produtos" />
+                <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
                 <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
                 <Separator styleClass="separator" />
                 <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
@@ -46,6 +46,7 @@
                     <TableColumn fx:id="colMarca" prefWidth="250" text="Marca" />
                     <TableColumn fx:id="colPreco" prefWidth="150" text="Preço (R$)" />
                     <TableColumn fx:id="colQuantidade" prefWidth="150" text="Quantidade" />
+                    <TableColumn fx:id="colAcao" prefWidth="150" text="Ação" />
                 </columns>
             </TableView>
 

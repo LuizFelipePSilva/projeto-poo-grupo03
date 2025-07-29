@@ -66,4 +66,30 @@ public class TelaLogin extends Application
         stage.show();
     }
 
+    public static void carrinho() {
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/Carrinho.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1280, 720);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Carrinho de Compras");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void notaFiscal() {
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoe/views/NotaFiscal.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1280, 720);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Nota Fiscal");
+        stage.setScene(scene);
+        stage.show();
+    }
+
 }

@@ -140,3 +140,17 @@
     -fx-alignment: center;
     -fx-padding: 5px;
 }
+
+.table-action-button {
+    -fx-background-color: #1d284c;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 15px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.table-action-button:hover {
+    -fx-background-color: #2a3a6e;
+}

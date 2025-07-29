@@ -16,6 +16,8 @@ public class TelaPrincipalController {
     public void paginaAdmin(){
         TelaLogin.admin();
     }
-    public void abrirTelaProduto() { TelaLogin.buscarProdutos(); // Abre a tela BuscarProdutos.fxml
-    }
+    public void abrirTelaProduto() { TelaLogin.buscarProdutos();}
+    public void goToCarrinho() {TelaLogin.carrinho();}
+    public void goToNotaFiscal() {TelaLogin.notaFiscal();}
+
 }

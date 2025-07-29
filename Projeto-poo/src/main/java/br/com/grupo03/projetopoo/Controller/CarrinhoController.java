@@ -1,5 +1,6 @@
 package br.com.grupo03.projetopoo.Controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Venda;
 import br.com.grupo03.projetopoo.model.service.VendaService;
@@ -8,6 +9,7 @@ import br.com.grupo03.projetopoo.model.service.strategy.FixedDiscountStrategy;
 import br.com.grupo03.projetopoo.model.service.strategy.NoDiscountStrategy;
 import br.com.grupo03.projetopoo.model.service.strategy.PercentageDiscountStrategy;
 import br.com.grupo03.projetopoo.util.CartManager;
+import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,14 +37,18 @@ public class CarrinhoController {
     private final CartManager cartManager = CartManager.getInstance();
     private DiscountStrategy activeDiscountStrategy;
 
+
     @FXML
     public void initialize() {
         this.activeDiscountStrategy = new NoDiscountStrategy();
+
         colunaCodigo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getCodigoBarras()));
-        colunaNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca())); //ver isso aqui depois
-        colunaMarca.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
-        colunaPreco.setCellValueFactory(new PropertyValueFactory<>("valorUnitario"));
-        colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        colunaNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
+        colunaPreco.setCellValueFactory(data ->
+                new SimpleObjectProperty<>(data.getValue().getValorUnitario()));
+        colunaQuantidade.setCellValueFactory(data ->
+                new SimpleObjectProperty<>(data.getValue().getQuantidade()));
+
         tabelaCarrinho.setItems(cartManager.getCartItems());
     }
 
@@ -86,10 +92,14 @@ public class CarrinhoController {
         }
     }
 
-    @FXML
-    protected void voltar() {
-        System.out.println("Botão Voltar clicado.");
-    }
+    @FXML private void goToPaginaInicial() { TelaLogin.telaPrincipal(); }
+    @FXML private void goToEstoque() { System.out.println("Navegando para Estoque..."); /* TelaLogin.estoque(); */ }
+    @FXML private void goToCarrinho() { TelaLogin.carrinho(); }
+    @FXML private void goToProdutos() { TelaLogin.buscarProdutos(); }
+    @FXML private void goToNotaFiscal() { TelaLogin.notaFiscal(); }
+    @FXML private void goToAdmin() { TelaLogin.admin(); }
+    @FXML private void sair() { TelaLogin.telaLogin(); }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

@@ -1,6 +1,7 @@
 package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
+import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.util.CartManager;
 import br.com.grupo03.projetopoo.views.TelaLogin;
@@ -77,7 +78,10 @@ public class BuscarProdutosController {
 
     private void adicionarAoCarrinho(Produto produto) {
         if (produto.getQuantidade() > 0) {
-            cartManager.addProduto(produto, 1);
+            ItemNota item = new ItemNota();
+            item.setProduto(produto);
+            item.setQuantidade(1);
+            cartManager.addItem(item);
             showAlert(Alert.AlertType.INFORMATION, "Sucesso",
                     "Produto '" + produto.getMarca() + "' adicionado ao carrinho!");
         } else {
@@ -110,7 +114,8 @@ public class BuscarProdutosController {
     public void sair(){ TelaLogin.telaLogin(); }
     public void paginaInicial(){ TelaLogin.telaPrincipal(); }
     public void paginaAdmin(){ TelaLogin.admin(); }
-    public void voltaTelaInicial(){ TelaLogin.telaPrincipal(); }
     public void goToCarrinho() { TelaLogin.carrinho(); }
     public void goToNotaFiscal(){ TelaLogin.notaFiscal(); }
+    public void goToProdutos() {TelaLogin.buscarProdutos();}
+    public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
 }

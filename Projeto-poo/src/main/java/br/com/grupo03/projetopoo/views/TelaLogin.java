@@ -9,116 +9,68 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class TelaLogin extends Application
-{
+public class TelaLogin extends Application {
     public static Stage stage;
+
     @Override
-    public void start(Stage stage) throws Exception {
-        this.stage = stage;
+    public void start(Stage stage) {
+        TelaLogin.stage = stage;
         telaLogin();
     }
 
-    public static void telaLogin(){
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/TelaLogin.fxml"));
-        Scene scene = null;
+    private static void carregarTela(String caminhoFXML, String titulo) {
+        FXMLLoader loader = new FXMLLoader(TelaLogin.class.getResource(caminhoFXML));
         try {
-            scene = new Scene(fxmlLoader.load(), 800, 600);
+            Scene scene = new Scene(loader.load());
+            stage.setTitle(titulo);
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        stage.setTitle("Tela de Login");
-        stage.setScene(scene);
-        stage.show();
     }
+
+    public static void telaLogin() {
+        carregarTela("/br/com/grupo03/projetopoo/views/TelaLogin.fxml", "Tela de Login");
+    }
+
     public static void telaPrincipal() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/TelaPrincipal.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 800, 600);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Tela inicial");
-        stage.setScene(scene);
-        stage.show();
+        carregarTela("/br/com/grupo03/projetopoo/views/TelaPrincipal.fxml", "Tela Inicial");
     }
-    public static void admin(){
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/Admin.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 800, 600);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Tela de Admin");
-        stage.setScene(scene);
-        stage.show();
+
+    public static void admin() {
+        carregarTela("/br/com/grupo03/projetopoo/views/Admin.fxml", "Tela de Admin");
     }
 
     public static void buscarProdutos() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/BuscarProdutos.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 1185, 668);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Buscar Produtos");
-        stage.setScene(scene);
-        stage.show();
+        carregarTela("/br/com/grupo03/projetopoo/views/BuscarProdutos.fxml", "Buscar Produtos");
     }
 
     public static void carrinho() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/Carrinho.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 1280, 720);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Carrinho de Compras");
-        stage.setScene(scene);
-        stage.show();
+        carregarTela("/br/com/grupo03/projetopoo/views/Carrinho.fxml", "Carrinho de Compras");
     }
 
     public static void notaFiscal() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/NotaFiscal.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 1280, 720);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Nota Fiscal");
-        stage.setScene(scene);
-        stage.show();
+        carregarTela("/br/com/grupo03/projetopoo/views/NotaFiscal.fxml", "Nota Fiscal");
     }
 
     public static void controleEstoque() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/ControleEstoque.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 1185, 668); // mesmo tamanho padrão
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Controle de Estoque");
-        stage.setScene(scene);
-        stage.show();
+        carregarTela("/br/com/grupo03/projetopoo/views/ControleEstoque.fxml", "Controle de Estoque");
     }
+
     public void adicionarProduto() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/grupo03/projetopoo/views/AdicionarProduto.fxml"));
-        Scene scene = null;
         try {
-            scene = new Scene(loader.load(), 1185, 668);
-        } catch (Exception e) {
+            Scene scene = new Scene(loader.load());
+            stage.setTitle("Adicionar Produto");
+            stage.setScene(scene);
+            stage.setMaximized(true);
+            stage.show();
+        } catch (IOException e) {
             e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Erro ao abrir tela de adicionar produto:\n" + e.getMessage()).showAndWait();
         }
-        stage.setTitle("Adicionar Produto");
-        stage.setScene(scene);
-        stage.show();
     }
-
 }
+

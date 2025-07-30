@@ -1,16 +1,15 @@
 package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
-import br.com.grupo03.projetopoo.model.dao.TipoDAO;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.model.entity.Tipo;
+import br.com.grupo03.projetopoo.model.service.TipoService;
 import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AdicionarProdutoController {
 
@@ -18,24 +17,57 @@ public class AdicionarProdutoController {
     @FXML private TextField campoCodigoBarras;
     @FXML private TextField campoPreco;
     @FXML private TextField campoQuantidade;
-    @FXML private ComboBox<Tipo> comboTipo;
+    @FXML private ComboBox<String> comboTipo; // ✅ Agora só trabalha com nomes
+
+    private final TipoService tipoService = new TipoService();
 
     @FXML
     public void initialize() {
         carregarTipos();
     }
 
+    /** ✅ Carrega apenas os nomes dos tipos no ComboBox */
     private void carregarTipos() {
         try {
-            TipoDAO tipoDAO = new TipoDAO();
-            List<Tipo> tipos = tipoDAO.findAll(); // busca todos os tipos do banco
+            List<Tipo> tipos = tipoService.getAll();
             comboTipo.getItems().clear();
-            comboTipo.getItems().addAll(tipos);
+            for (Tipo t : tipos) {
+                comboTipo.getItems().add(t.getNome());
+            }
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erro ao carregar tipos", "Não foi possível carregar os tipos do banco: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erro ao carregar tipos", "Não foi possível carregar os tipos: " + e.getMessage());
         }
     }
 
+    /** ✅ Botão + para adicionar um novo tipo apenas com o nome */
+    @FXML
+    private void adicionarNovoTipo() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Novo Tipo");
+        dialog.setHeaderText("Adicionar novo tipo de produto");
+        dialog.setContentText("Digite o nome do novo tipo:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(nomeTipo -> {
+            if (nomeTipo.trim().isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "Tipo inválido", "O nome do tipo não pode estar vazio.");
+                return;
+            }
+
+            try {
+                Tipo novoTipo = new Tipo();
+                novoTipo.setNome(nomeTipo.trim());
+                tipoService.saveTipo(novoTipo);
+                carregarTipos();
+                comboTipo.setValue(novoTipo.getNome());
+                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Novo tipo adicionado com sucesso!");
+            } catch (RuntimeException e) {
+                showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível adicionar o tipo: " + e.getMessage());
+            }
+        });
+    }
+
+    /** ✅ Salvar produto pegando o nome do tipo e convertendo para entidade */
     @FXML
     private void salvarProduto() {
         try {
@@ -43,10 +75,16 @@ public class AdicionarProdutoController {
             String codigo = campoCodigoBarras.getText();
             double preco = Double.parseDouble(campoPreco.getText());
             int quantidade = Integer.parseInt(campoQuantidade.getText());
-            Tipo tipo = comboTipo.getValue();
+            String nomeTipo = comboTipo.getValue();
 
-            if (marca.isEmpty() || codigo.isEmpty() || tipo == null) {
+            if (marca.isEmpty() || codigo.isEmpty() || nomeTipo == null) {
                 showAlert(Alert.AlertType.WARNING, "Campos obrigatórios", "Preencha todos os campos antes de salvar.");
+                return;
+            }
+
+            Tipo tipoSelecionado = tipoService.getByName(nomeTipo);
+            if (tipoSelecionado == null) {
+                showAlert(Alert.AlertType.ERROR, "Erro", "Tipo selecionado não existe mais no banco.");
                 return;
             }
 
@@ -55,13 +93,13 @@ public class AdicionarProdutoController {
             produto.setCodigoBarras(codigo);
             produto.setPreco(preco);
             produto.setQuantidade(quantidade);
-            produto.setTipo(tipo);
+            produto.setTipo(tipoSelecionado);
 
             ProdutoDAO dao = new ProdutoDAO();
             dao.save(produto);
 
             showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto cadastrado com sucesso!");
-            TelaLogin.telaPrincipal();
+            TelaLogin.controleEstoque();
 
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erro de Formato", "Preço e quantidade devem ser numéricos.");
@@ -72,7 +110,7 @@ public class AdicionarProdutoController {
 
     @FXML
     private void cancelar() {
-        TelaLogin.telaPrincipal();
+        TelaLogin.controleEstoque();
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -83,11 +121,12 @@ public class AdicionarProdutoController {
         alert.showAndWait();
     }
 
+    // ✅ Métodos de navegação
     public void sair() { TelaLogin.telaLogin(); }
     public void paginaInicial() { TelaLogin.telaPrincipal(); }
     public void paginaAdmin() { TelaLogin.admin(); }
     public void goToCarrinho() { TelaLogin.carrinho(); }
     public void goToNotaFiscal() { TelaLogin.notaFiscal(); }
     public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
-    public void goToProdutos() {TelaLogin.buscarProdutos();}
+    public void goToProdutos() { TelaLogin.buscarProdutos(); }
 }

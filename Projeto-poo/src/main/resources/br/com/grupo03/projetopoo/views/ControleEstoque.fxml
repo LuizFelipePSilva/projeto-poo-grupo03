@@ -11,7 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="668" prefWidth="1185" style="-fx-background-color: #f8f8fc;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.grupo03.projetopoo.Controller.ControleEstoqueController">
+<BorderPane prefHeight="668" prefWidth="1185" style="-fx-background-color: #f8f8fc;" stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="br.com.grupo03.projetopoo.Controller.ControleEstoqueController">
 
     <!-- Menu lateral -->
     <left>
@@ -39,22 +41,28 @@
         <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 20;">
             <Label style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #2a2a2a;" text="CONTROLE DE ESTOQUE" />
 
-            <TextField fx:id="campoBusca" promptText="Buscar produtos" style="-fx-background-radius: 20; -fx-padding: 8; -fx-background-color: #f2eef9; -fx-border-color: transparent;" />
+            <!-- ✅ Campo de busca -->
+            <TextField fx:id="campoBusca" promptText="Buscar por código, marca ou tipo"
+                       style="-fx-background-radius: 20; -fx-padding: 8; -fx-background-color: #f2eef9; -fx-border-color: transparent;" />
 
             <TableView fx:id="tabelaEstoque" prefHeight="400" style="-fx-background-color: white; -fx-border-color: #ddd;">
                 <columns>
-                    <TableColumn fx:id="colCodigo" prefWidth="140" text="Código" />
-                    <TableColumn fx:id="colMarca" prefWidth="140" text="Marca" />
-                    <TableColumn fx:id="colPreco" prefWidth="110.39996337890625" text="Preço (R$)" />
-                    <TableColumn fx:id="colQuantidade" prefWidth="109.60003662109375" text="Quantidade" />
-                    <TableColumn fx:id="colTipo" prefWidth="110.39990234375" text="Tipo" />
-                    <!-- Nova coluna para ações -->
-                    <TableColumn fx:id="colAcoes" prefWidth="131.199951171875" text="Alterar ou excluir:" />
+                    <TableColumn fx:id="colCodigo" prefWidth="150" text="Código" />
+                    <TableColumn fx:id="colMarca" prefWidth="200" text="Marca" />
+                    <TableColumn fx:id="colPreco" prefWidth="150" text="Preço (R$)" />
+                    <TableColumn fx:id="colQuantidade" prefWidth="120" text="Quantidade" />
+                    <TableColumn fx:id="colTipo" prefWidth="120" text="Tipo" />
+                    <TableColumn fx:id="colAcoes" prefWidth="180" text="Alterar / Excluir" />
                 </columns>
             </TableView>
 
+            <!-- ✅ Label para mensagens -->
+            <Label fx:id="labelMensagem" textFill="red" style="-fx-font-weight: bold;" />
+
             <HBox alignment="CENTER_RIGHT" spacing="15" style="-fx-padding: 10;">
-                <Button fx:id="btnAdicionar" onAction="#adicionarProduto" style="-fx-background-color: #1c2541; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 6;" text="Adicionar produtos" />
+                <Button fx:id="btnAdicionar" onAction="#adicionarProduto"
+                        style="-fx-background-color: #1c2541; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 6;"
+                        text="Adicionar produtos" />
             </HBox>
         </VBox>
     </center>

@@ -1,4 +1,5 @@
 package br.com.grupo03.projetopoo.model.service;
+
 import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.dao.TipoDAO;
 import br.com.grupo03.projetopoo.model.service.interfaces.TipoInterfaceService;
@@ -6,6 +7,7 @@ import br.com.grupo03.projetopoo.model.service.interfaces.TipoInterfaceService;
 import java.util.List;
 
 public class TipoService implements TipoInterfaceService {
+
     private final TipoDAO tipoDAO = new TipoDAO();
 
     @Override
@@ -49,5 +51,15 @@ public class TipoService implements TipoInterfaceService {
     @Override
     public List<Tipo> getAll() {
         return tipoDAO.findAll();
+    }
+
+    /**
+     * ✅ Salva um novo tipo usando o DAO diretamente (sem EntityManager manual)
+     */
+    public void saveTipo(Tipo tipo) {
+        if (tipoDAO.findByName(tipo.getNome()) != null) {
+            throw new RuntimeException("Tipo já existe com este nome.");
+        }
+        tipoDAO.save(tipo); // O DAO gerencia a persistência
     }
 }

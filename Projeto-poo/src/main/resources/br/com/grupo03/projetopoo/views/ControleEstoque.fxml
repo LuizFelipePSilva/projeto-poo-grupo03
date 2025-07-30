@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="668" prefWidth="1185" style="-fx-background-color: #f8f8fc;" stylesheets="@style.css"
+<BorderPane style="-fx-background-color: #f8f8fc;" stylesheets="@style.css"
             xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="br.com.grupo03.projetopoo.Controller.ControleEstoqueController">
 

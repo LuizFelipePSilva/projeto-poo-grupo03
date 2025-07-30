@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane prefHeight="720.0" stylesheets="@style.css" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.grupo03.projetopoo.Controller.AdminController">
+<BorderPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.grupo03.projetopoo.Controller.AdminController">
    <left>
       <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" styleClass="side-menu">
          <padding>

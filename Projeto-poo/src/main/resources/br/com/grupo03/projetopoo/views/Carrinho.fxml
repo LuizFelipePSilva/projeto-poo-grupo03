@@ -52,7 +52,6 @@
                         <TableColumn fx:id="colunaMarca"  text="Marca" />
                         <TableColumn fx:id="colunaPreco"  text="Preço (R$)" />
                         <TableColumn fx:id="colunaQuantidade"  text="Quantidade" />
-                        <TableColumn fx:id="colunaRemover"  text="Ação" />
                     </columns>
                 </TableView>
                 <GridPane hgap="20">

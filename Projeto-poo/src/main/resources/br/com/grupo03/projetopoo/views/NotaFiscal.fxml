@@ -25,10 +25,9 @@
         <TableView fx:id="tabelaItens" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colunaItemNome" text="Nome do item" />
-                <TableColumn fx:id="colunaItemQtd" text="Quantidade" />
                 <TableColumn fx:id="colunaItemValorUnit" text="Valor unitário" />
                 <TableColumn fx:id="colunaItemValorTotal" text="Valor Total" />
-                <TableColumn fx:id="colunaRemover" text="Ação" />
+                <TableColumn fx:id="colunaItemQtd" text="Quantidade" />
             </columns>
         </TableView>
 

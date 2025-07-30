@@ -57,4 +57,7 @@ public class CartManager {
     public void clearCart() {
         cartItems.clear();
     }
+    public void removeItem(ItemNota item) {
+        cartItems.remove(item);
+    }
 }

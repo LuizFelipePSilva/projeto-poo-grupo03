@@ -1,5 +1,6 @@
 package br.com.grupo03.projetopoo.Controller;
 
+import br.com.grupo03.projetopoo.Controller.cells.QuantityCell;
 import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Venda;
 import br.com.grupo03.projetopoo.model.service.strategy.DiscountStrategy;
@@ -27,8 +28,7 @@ public class CarrinhoController {
     @FXML private TableColumn<ItemNota, String> colunaCodigo;
     @FXML private TableColumn<ItemNota, String> colunaMarca;
     @FXML private TableColumn<ItemNota, Double> colunaPreco;
-    @FXML private TableColumn<ItemNota, Integer> colunaQuantidade;
-    @FXML private TableColumn<ItemNota, Void> colunaRemover;
+    @FXML private TableColumn<ItemNota, Void> colunaQuantidade;
     @FXML private TextField textFieldCupom;
     @FXML private Label labelValorTotal;
 
@@ -42,17 +42,16 @@ public class CarrinhoController {
         colunaCodigo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getCodigoBarras()));
         colunaMarca.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
         colunaPreco.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorUnitario()));
-        colunaQuantidade.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getQuantidade()));
+        colunaQuantidade.setCellFactory(param -> new QuantityCell());
 
-        configureRemoveColumn();
+
         tabelaCarrinho.setItems(cartManager.getCartItems());
 
         double totalWidth = 1;
         colunaCodigo.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.20)); // 20%
         colunaMarca.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.40));  // 40%
         colunaPreco.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.15));   // 15%
-        colunaQuantidade.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.15)); // 15%
-        colunaRemover.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.10)); // 10%
+        colunaQuantidade.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.25)); // 25%
 
         tabelaCarrinho.setItems(cartManager.getCartItems());
 
@@ -60,25 +59,6 @@ public class CarrinhoController {
         updateTotalValue();
     }
 
-    private void configureRemoveColumn() {
-        Callback<TableColumn<ItemNota, Void>, TableCell<ItemNota, Void>> cellFactory = param -> {
-            return new TableCell<>() {
-                private final Button btn = new Button("Remover");
-                {
-                    btn.setOnAction((ActionEvent event) -> {
-                        ItemNota item = getTableView().getItems().get(getIndex());
-                        cartManager.removeProduto(item.getProduto());
-                    });
-                }
-                @Override
-                public void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setGraphic(empty ? null : btn);
-                }
-            };
-        };
-        colunaRemover.setCellFactory(cellFactory);
-    }
 
     private void updateTotalValue() {
         double subtotal = cartManager.getCartItems().stream().mapToDouble(ItemNota::getValorTotal).sum();

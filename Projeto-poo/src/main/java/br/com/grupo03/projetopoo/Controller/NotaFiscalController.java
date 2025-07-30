@@ -1,5 +1,6 @@
 package br.com.grupo03.projetopoo.Controller;
 
+import br.com.grupo03.projetopoo.Controller.cells.NotaFiscalQuantityCell;
 import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Venda;
 import br.com.grupo03.projetopoo.model.service.VendaService;
@@ -26,10 +27,9 @@ public class NotaFiscalController {
     @FXML private Label labelValorTotalCompra;
     @FXML private TableView<ItemNota> tabelaItens;
     @FXML private TableColumn<ItemNota, String> colunaItemNome;
-    @FXML private TableColumn<ItemNota, Integer> colunaItemQtd;
+    @FXML private TableColumn<ItemNota, Void> colunaItemQtd;
     @FXML private TableColumn<ItemNota, Double> colunaItemValorUnit;
     @FXML private TableColumn<ItemNota, Double> colunaItemValorTotal;
-    @FXML private TableColumn<ItemNota, Void> colunaRemover;
 
     // --- Lógica de Negócio ---
     private final VendaService vendaService = new VendaService();
@@ -41,15 +41,13 @@ public class NotaFiscalController {
     public void initialize() {
         this.activeDiscountStrategy = new NoDiscountStrategy();
 
-        // Configuração das colunas de dados
         colunaItemNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
-        colunaItemQtd.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getQuantidade()));
         colunaItemValorUnit.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorUnitario()));
         colunaItemValorTotal.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorTotal()));
+        colunaItemQtd.setCellFactory(param -> new NotaFiscalQuantityCell(this));
 
         configureColumnWidths();
 
-        configureRemoveColumn();
     }
 
     public void iniciarDados(ObservableList<ItemNota> itensDoCarrinho, DiscountStrategy discountStrategy) {
@@ -74,10 +72,9 @@ public class NotaFiscalController {
     private void configureColumnWidths() {
         double totalWidth = 0.99;
         colunaItemNome.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.45)); // 45%
-        colunaItemQtd.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15));  // 15%
+        colunaItemQtd.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.25));  // 15%
         colunaItemValorUnit.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15));   // 15%
         colunaItemValorTotal.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15)); // 15%
-        colunaRemover.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.10)); // 10%
     }
 
     @FXML
@@ -102,32 +99,10 @@ public class NotaFiscalController {
 
 
     @FXML
-    protected void voltarParaCarrinho() {
+    public void voltarParaCarrinho() {
         TelaLogin.carrinho();
     }
 
-    private void configureRemoveColumn() {
-        Callback<TableColumn<ItemNota, Void>, TableCell<ItemNota, Void>> cellFactory = param -> {
-            return new TableCell<>() {
-                private final Button btn = new Button("Remover");
-                {
-                    btn.getStyleClass().add("table-action-button");
-                    btn.setOnAction((ActionEvent event) -> {
-                        ItemNota item = getTableView().getItems().get(getIndex());
-                        cartManager.removeProduto(item.getProduto());
-                        if (cartManager.getCartItems().isEmpty()) {
-                            voltarParaCarrinho();
-                        }
-                    });
-                }
-                @Override public void updateItem(Void item, boolean empty) {
-                    super.updateItem(item, empty);
-                    setGraphic(empty ? null : btn);
-                }
-            };
-        };
-        colunaRemover.setCellFactory(cellFactory);
-    }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

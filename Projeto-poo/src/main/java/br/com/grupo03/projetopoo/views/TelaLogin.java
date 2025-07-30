@@ -92,4 +92,31 @@ public class TelaLogin extends Application
         stage.show();
     }
 
+    public static void listaProdutos() {
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/ListaProdutos.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1185, 668); // mesmo tamanho que BuscarProdutos
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Lista de Produtos");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void controleEstoque() {
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/ControleEstoque.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 1185, 668); // mesmo tamanho padrão
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        stage.setTitle("Controle de Estoque");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 }

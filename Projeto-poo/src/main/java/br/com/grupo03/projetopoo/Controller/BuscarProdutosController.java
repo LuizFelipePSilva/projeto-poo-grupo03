@@ -1,6 +1,5 @@
 package br.com.grupo03.projetopoo.Controller;
 
-import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.util.CartManager;
@@ -78,11 +77,12 @@ public class BuscarProdutosController {
 
     private void adicionarAoCarrinho(Produto produto) {
         if (produto.getQuantidade() > 0) {
-            ItemNota item = new ItemNota(produto, 1);
-            cartManager.addItem(item);
-            showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Produto '" + produto.getMarca() + "' adicionado ao carrinho!");
+            cartManager.addProduto(produto, 1);
+            showAlert(Alert.AlertType.INFORMATION, "Sucesso",
+                    "Produto '" + produto.getMarca() + "' adicionado ao carrinho!");
         } else {
-            showAlert(Alert.AlertType.WARNING, "Estoque Esgotado", "Este produto não está disponível em estoque.");
+            showAlert(Alert.AlertType.WARNING, "Estoque Esgotado",
+                    "Este produto não está disponível em estoque.");
         }
     }
 

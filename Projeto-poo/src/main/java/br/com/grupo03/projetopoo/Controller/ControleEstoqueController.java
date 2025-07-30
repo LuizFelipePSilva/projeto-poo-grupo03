@@ -9,7 +9,6 @@ import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 import java.util.List;
 
@@ -30,6 +30,7 @@ public class ControleEstoqueController {
     @FXML private TableColumn<Produto, Integer> colQuantidade;
     @FXML private TableColumn<Produto, String> colTipo;
     @FXML private TableColumn<Produto, Void> colAcoes;
+    @FXML private Label labelMensagem;
 
     private ObservableList<Produto> listaProdutos;
 
@@ -38,9 +39,17 @@ public class ControleEstoqueController {
         configurarColunas();
         carregarProdutos();
         adicionarBotoesAcoes();
+
+        campoBusca.textProperty().addListener((obs, oldVal, newVal) -> filtrarProdutos(newVal));
     }
 
-    /** Configura as colunas da tabela */
+    /** ✅ Exibir mensagem na tela */
+    private void exibirMensagem(String mensagem, boolean erro) {
+        labelMensagem.setText(mensagem);
+        labelMensagem.setTextFill(erro ? Color.RED : Color.GREEN);
+    }
+
+    /** Configura as colunas */
     private void configurarColunas() {
         colCodigo.setCellValueFactory(new PropertyValueFactory<>("codigoBarras"));
         colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
@@ -53,7 +62,7 @@ public class ControleEstoqueController {
         );
     }
 
-    /** Busca produtos no banco e carrega na tabela */
+    /** Carrega produtos */
     private void carregarProdutos() {
         ProdutoDAO dao = new ProdutoDAO();
         List<Produto> produtos = dao.findAll();
@@ -61,7 +70,22 @@ public class ControleEstoqueController {
         tabelaEstoque.setItems(listaProdutos);
     }
 
-    /** Adiciona botões Alterar e Excluir dentro da tabela */
+    /** Filtra produtos */
+    private void filtrarProdutos(String filtro) {
+        if (filtro == null || filtro.isEmpty()) {
+            tabelaEstoque.setItems(listaProdutos);
+        } else {
+            String filtroLower = filtro.toLowerCase();
+            List<Produto> filtrados = listaProdutos.stream()
+                    .filter(p -> (p.getCodigoBarras() != null && p.getCodigoBarras().toLowerCase().contains(filtroLower)) ||
+                            (p.getMarca() != null && p.getMarca().toLowerCase().contains(filtroLower)) ||
+                            (p.getTipo() != null && p.getTipo().getNome().toLowerCase().contains(filtroLower)))
+                    .toList();
+            tabelaEstoque.setItems(FXCollections.observableArrayList(filtrados));
+        }
+    }
+
+    /** Adiciona botões Alterar/Excluir */
     private void adicionarBotoesAcoes() {
         colAcoes.setCellFactory(param -> new TableCell<>() {
             private final Button btnAlterar = new Button("Alterar");
@@ -92,21 +116,20 @@ public class ControleEstoqueController {
         });
     }
 
-    /** Abre a tela de adicionar produto */
+    /** Abre tela adicionar produto */
     @FXML
     public void adicionarProduto() {
         try {
             TelaLogin telaLogin = new TelaLogin();
             telaLogin.adicionarProduto();
             carregarProdutos();
-
+            exibirMensagem("", false);
         } catch (Exception e) {
-            e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erro ao abrir tela de adicionar produto:\n" + e.getMessage()).showAndWait();
+            exibirMensagem("Erro ao abrir tela de adicionar: " + e.getMessage(), true);
         }
     }
 
-    /** Abre modal para alterar marca, preço, quantidade e tipo */
+    /** Alterar produto */
     private void abrirPopupAlterar(Produto produto) {
         Stage modal = new Stage();
         modal.initModality(Modality.APPLICATION_MODAL);
@@ -133,25 +156,27 @@ public class ControleEstoqueController {
                 produto.setMarca(campoMarca.getText());
                 produto.setPreco(Double.parseDouble(campoPreco.getText()));
                 produto.setQuantidade(Integer.parseInt(campoQuantidade.getText()));
+
                 TipoService tipoService = new TipoService();
                 Tipo tipoExistente = tipoService.getByName(campoTipo.getText());
 
                 if (tipoExistente == null) {
-                    throw new IllegalArgumentException("Tipo não encontrado.");
+                    tipoExistente = new Tipo();
+                    tipoExistente.setNome(campoTipo.getText());
+                    tipoService.saveTipo(tipoExistente);
                 }
+
                 produto.setTipo(tipoExistente);
 
-                // Atualiza tabela
-                tabelaEstoque.refresh();
-                modal.close();
-                System.out.println(produto.toString());
                 ProdutoService produtoService = new ProdutoService();
                 produtoService.updateProduto(produto);
-                System.out.println("Produto atualizado: " + produto.getMarca());
 
+                tabelaEstoque.refresh();
+                modal.close();
+
+                exibirMensagem("Produto atualizado com sucesso!", false);
             } catch (Exception ex) {
-                ex.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Erro ao salvar alterações: " + ex.getMessage()).showAndWait();
+                exibirMensagem("Erro ao salvar alterações: " + ex.getMessage(), true);
             }
         });
 
@@ -162,7 +187,7 @@ public class ControleEstoqueController {
         modal.showAndWait();
     }
 
-    /** Confirma e exclui um produto */
+    /** Excluir produto */
     private void confirmarExcluir(Produto produto) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Excluir Produto");
@@ -170,21 +195,25 @@ public class ControleEstoqueController {
 
         alert.showAndWait().ifPresent(result -> {
             if (result == ButtonType.OK) {
-                tabelaEstoque.getItems().remove(produto);
-                System.out.println("Produto excluído: " + produto.getMarca());
-                ProdutoService produtoService = new ProdutoService();
+                try {
+                    ProdutoService produtoService = new ProdutoService();
+                    produtoService.removeProduto(produto);
 
-                produtoService.removeProduto(produto);
+                    tabelaEstoque.getItems().remove(produto);
+                    exibirMensagem("Produto removido com sucesso!", false);
+                } catch (Exception e) {
+                    exibirMensagem("Erro ao excluir produto: " + e.getMessage(), true);
+                }
             }
         });
     }
 
-    // Métodos de navegação
+    // Navegação
     public void sair(){ TelaLogin.telaLogin(); }
     public void paginaInicial(){ TelaLogin.telaPrincipal(); }
     public void paginaAdmin(){ TelaLogin.admin(); }
     public void goToCarrinho() { TelaLogin.carrinho(); }
     public void goToNotaFiscal(){ TelaLogin.notaFiscal(); }
-    public void goToProdutos() {TelaLogin.buscarProdutos();}
+    public void goToProdutos() {TelaLogin.buscarProdutos(); }
     public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
 }

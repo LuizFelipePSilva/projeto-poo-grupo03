@@ -4,10 +4,8 @@ import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import java.util.Optional;
 
-/**
- * Gerencia o carrinho de compras em memória (Singleton)
- */
 public class CartManager {
 
     private static CartManager instance;
@@ -22,29 +20,25 @@ public class CartManager {
         return instance;
     }
 
-    /**
-     * Retorna a lista de itens do carrinho (observável para TableView)
-     */
-    public ObservableList<ItemNota> getCartItems() {
-        return cartItems;
-    }
+    public void addItem(ItemNota itemParaAdicionar) {
+        Produto produtoParaAdicionar = itemParaAdicionar.getProduto();
+        int quantidadeParaAdicionar = itemParaAdicionar.getQuantidade();
 
-    /**
-     * Adiciona um produto ao carrinho. Se já existe, aumenta a quantidade.
-     */
-    public void addProduto(Produto produto, int quantidade) {
-        if (quantidade <= 0) return;
+        Optional<ItemNota> itemExistenteOpt = cartItems.stream()
+                .filter(item -> item.getProduto().getId().equals(produtoParaAdicionar.getId()))
+                .findFirst();
 
-        for (ItemNota item : cartItems) {
-            if (item.getProduto().getId().equals(produto.getId())) {
-                item.setQuantidade(item.getQuantidade() + quantidade);
-                return;
-            }
+        if (itemExistenteOpt.isPresent()) {
+            ItemNota itemExistente = itemExistenteOpt.get();
+            int novaQuantidade = itemExistente.getQuantidade() + quantidadeParaAdicionar;
+            itemExistente.setQuantidade(novaQuantidade);
+
+            int index = cartItems.indexOf(itemExistente);
+            cartItems.set(index, itemExistente);
+
+        } else {
+            cartItems.add(itemParaAdicionar);
         }
-
-        ItemNota novoItem = new ItemNota(produto, quantidade);
-        cartItems.add(novoItem);
-
     }
 
     /**

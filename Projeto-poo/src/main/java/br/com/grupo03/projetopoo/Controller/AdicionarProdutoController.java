@@ -88,5 +88,6 @@ public class AdicionarProdutoController {
     public void paginaAdmin() { TelaLogin.admin(); }
     public void goToCarrinho() { TelaLogin.carrinho(); }
     public void goToNotaFiscal() { TelaLogin.notaFiscal(); }
-    public void abrirControleEstoque() { TelaLogin.listaProdutos(); }
+    public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
+    public void goToProdutos() {TelaLogin.buscarProdutos();}
 }

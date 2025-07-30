@@ -67,7 +67,7 @@ public class CarrinhoController {
                 {
                     btn.setOnAction((ActionEvent event) -> {
                         ItemNota item = getTableView().getItems().get(getIndex());
-                        cartManager.removeItem(item);
+                        cartManager.removeProduto(item.getProduto());
                     });
                 }
                 @Override
@@ -126,13 +126,13 @@ public class CarrinhoController {
         }
     }
 
-    @FXML private void goToPaginaInicial() { TelaLogin.telaPrincipal(); }
-    @FXML private void goToEstoque() { System.out.println("Navegando para Estoque..."); }
-    @FXML private void goToCarrinho() { TelaLogin.carrinho(); }
-    @FXML private void goToProdutos() { TelaLogin.buscarProdutos(); }
-    @FXML private void goToNotaFiscal() { TelaLogin.notaFiscal(); }
-    @FXML private void goToAdmin() { TelaLogin.admin(); }
-    @FXML private void sair() { TelaLogin.telaLogin(); }
+    public void sair(){ TelaLogin.telaLogin(); }
+    public void paginaInicial(){ TelaLogin.telaPrincipal(); }
+    public void paginaAdmin(){ TelaLogin.admin(); }
+    public void goToCarrinho() { TelaLogin.carrinho(); }
+    public void goToNotaFiscal(){ TelaLogin.notaFiscal(); }
+    public void goToProdutos() {TelaLogin.buscarProdutos();}
+    public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

@@ -105,5 +105,15 @@ public class Produto {
         setQuantidade(novaQuantidade);
     }
 
-
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", marca='" + marca + '\'' +
+                ", codigoBarras='" + codigoBarras + '\'' +
+                ", quantidade=" + quantidade +
+                ", preco=" + preco +
+                ", tipo=" + tipo +
+                '}';
+    }
 }

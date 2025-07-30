@@ -27,14 +27,14 @@
             <children>
                 <Label styleClass="side-menu-title" text="MERCADINHO" />
                 <Separator styleClass="separator" />
-                <Button onAction="#goToPaginaInicial" maxWidth="Infinity" styleClass="side-menu-button" text="Página Inicial" />
-                <Button onAction="#goToEstoque" maxWidth="Infinity" styleClass="side-menu-button" text="Estoque" />
-                <Button onAction="#goToCarrinho" maxWidth="Infinity" styleClass="side-menu-button" text="Carrinho" />
-                <Button onAction="#goToProdutos" maxWidth="Infinity" styleClass="side-menu-button" text="Produtos" />
-                <Button onAction="#goToNotaFiscal" maxWidth="Infinity" styleClass="side-menu-button" text="Nota Fiscal" />
-                <Button onAction="#goToAdmin" maxWidth="Infinity" styleClass="side-menu-button" text="Admin" />
+                <Button maxWidth="Infinity" onAction="#paginaInicial" styleClass="side-menu-button" text="Página Inicial" />
+                <Button maxWidth="Infinity" onAction="#abrirControleEstoque" styleClass="side-menu-button" text="Estoque" />
+                <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
+                <Button maxWidth="Infinity" onAction="#goToProdutos" styleClass="side-menu-button" text="Produtos" />
+                <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
+                <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
                 <Separator styleClass="separator" />
-                <Button onAction="#sair" maxWidth="Infinity" styleClass="side-menu-button" text="Sair" />
+                <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
             </children>
         </VBox>
     </left>

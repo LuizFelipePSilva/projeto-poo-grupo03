@@ -128,8 +128,9 @@ public class ListaProdutosController {
     public void paginaAdmin() {
         TelaLogin.admin();
     }
-
+    public void goToProdutos() {TelaLogin.buscarProdutos();}
     public void sair() {
         TelaLogin.telaLogin();
     }
+    public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
 }

@@ -114,7 +114,7 @@ public class NotaFiscalController {
                     btn.getStyleClass().add("table-action-button");
                     btn.setOnAction((ActionEvent event) -> {
                         ItemNota item = getTableView().getItems().get(getIndex());
-                        cartManager.removeItem(item);
+                        cartManager.removeProduto(item.getProduto());
                         if (cartManager.getCartItems().isEmpty()) {
                             voltarParaCarrinho();
                         }

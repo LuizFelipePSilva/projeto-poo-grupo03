@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,6 +14,7 @@ public class TelaLogin extends Application {
     @Override
     public void start(Stage stage) {
         TelaLogin.stage = stage;
+        br.com.grupo03.projetopoo.HibernateBootstrapTest.main(new String[0]);
         telaLogin();
     }
 

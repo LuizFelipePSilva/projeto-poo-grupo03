@@ -2,55 +2,139 @@ package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Venda;
+import br.com.grupo03.projetopoo.model.service.VendaService;
+import br.com.grupo03.projetopoo.model.service.strategy.DiscountStrategy;
+import br.com.grupo03.projetopoo.model.service.strategy.NoDiscountStrategy;
+import br.com.grupo03.projetopoo.util.CartManager;
 import br.com.grupo03.projetopoo.views.TelaLogin;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
+import javafx.util.Callback;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NotaFiscalController {
 
-    @FXML private Label labelNomeCliente;
-    @FXML private Label labelFormaPagamento;
-    @FXML private Label labelValorTotalResumo;
-    @FXML private Label labelCodigoPedido;
-    @FXML private Label labelTotalItens;
+    // --- Componentes FXML ---
+    @FXML private Label labelSubtotal;
+    @FXML private Label labelDesconto;
     @FXML private Label labelValorTotalCompra;
     @FXML private TableView<ItemNota> tabelaItens;
     @FXML private TableColumn<ItemNota, String> colunaItemNome;
     @FXML private TableColumn<ItemNota, Integer> colunaItemQtd;
     @FXML private TableColumn<ItemNota, Double> colunaItemValorUnit;
     @FXML private TableColumn<ItemNota, Double> colunaItemValorTotal;
+    @FXML private TableColumn<ItemNota, Void> colunaRemover;
+
+    // --- Lógica de Negócio ---
+    private final VendaService vendaService = new VendaService();
+    private final CartManager cartManager = CartManager.getInstance();
+    private ObservableList<ItemNota> itensDoPedido;
+    private DiscountStrategy activeDiscountStrategy;
 
     @FXML
     public void initialize() {
+        this.activeDiscountStrategy = new NoDiscountStrategy();
+
+        // Configuração das colunas de dados
         colunaItemNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
-        colunaItemQtd.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
-        colunaItemValorUnit.setCellValueFactory(new PropertyValueFactory<>("valorUnitario"));
-        colunaItemValorTotal.setCellValueFactory(new PropertyValueFactory<>("valorTotal"));
+        colunaItemQtd.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getQuantidade()));
+        colunaItemValorUnit.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorUnitario()));
+        colunaItemValorTotal.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorTotal()));
+
+        configureColumnWidths();
+
+        configureRemoveColumn();
     }
 
+    public void iniciarDados(ObservableList<ItemNota> itensDoCarrinho, DiscountStrategy discountStrategy) {
+        this.itensDoPedido = itensDoCarrinho;
+        this.activeDiscountStrategy = discountStrategy;
+        tabelaItens.setItems(this.itensDoPedido);
 
-    public void carregarDadosVenda(Venda venda) {
-        if (venda == null) return;
+        this.itensDoPedido.addListener((ListChangeListener<ItemNota>) c -> updateTotalValue());
+        updateTotalValue();
+    }
 
-        labelNomeCliente.setText("Cliente Padrão");
-        labelFormaPagamento.setText("Pagamento na loja");
-        labelValorTotalResumo.setText(String.format("R$ %.2f", venda.getValorTotal()));
-        labelCodigoPedido.setText("CÓDIGO DO PEDIDO: " + venda.getId());
-        labelTotalItens.setText("TOTAL DE ITENS: " + venda.getItens().size());
-        labelValorTotalCompra.setText(String.format("VALOR TOTAL DA COMPRA: R$ %.2f", venda.getValorTotal()));
-        tabelaItens.setItems(FXCollections.observableArrayList(venda.getItens()));
+    private void updateTotalValue() {
+        double subtotal = this.itensDoPedido.stream().mapToDouble(ItemNota::getValorTotal).sum();
+        double discount = activeDiscountStrategy.calculateDiscount(subtotal);
+        double finalTotal = subtotal - discount;
+
+        labelSubtotal.setText(String.format("R$ %.2f", subtotal));
+        labelDesconto.setText(String.format("- R$ %.2f", discount));
+        labelValorTotalCompra.setText(String.format("R$ %.2f", finalTotal));
+    }
+
+    private void configureColumnWidths() {
+        double totalWidth = 0.99;
+        colunaItemNome.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.45)); // 45%
+        colunaItemQtd.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15));  // 15%
+        colunaItemValorUnit.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15));   // 15%
+        colunaItemValorTotal.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.15)); // 15%
+        colunaRemover.prefWidthProperty().bind(tabelaItens.widthProperty().multiply(totalWidth * 0.10)); // 10%
     }
 
     @FXML
-    protected void finalizar() {
-        Stage stage = (Stage) labelCodigoPedido.getScene().getWindow();
-        stage.close();
+    protected void finalizarPedido() {
+        if (itensDoPedido.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Pedido Vazio", "Não é possível finalizar um pedido vazio.");
+            return;
+        }
+        Map<Long, Integer> shoppingCartMap = new HashMap<>();
+        for (ItemNota item : itensDoPedido) {
+            shoppingCartMap.put(item.getProduto().getId(), item.getQuantidade());
+        }
+        try {
+            Venda vendaRealizada = vendaService.performSale(shoppingCartMap, activeDiscountStrategy);
+            showAlert(Alert.AlertType.INFORMATION, "Pedido Finalizado", "Sua compra foi realizada com sucesso! ID da Venda: " + vendaRealizada.getId());
+            cartManager.clearCart();
+            TelaLogin.telaPrincipal();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erro no Pedido", "Houve um erro ao finalizar o pedido: " + e.getMessage());
+        }
+    }
+
+
+    @FXML
+    protected void voltarParaCarrinho() {
+        TelaLogin.carrinho();
+    }
+
+    private void configureRemoveColumn() {
+        Callback<TableColumn<ItemNota, Void>, TableCell<ItemNota, Void>> cellFactory = param -> {
+            return new TableCell<>() {
+                private final Button btn = new Button("Remover");
+                {
+                    btn.getStyleClass().add("table-action-button");
+                    btn.setOnAction((ActionEvent event) -> {
+                        ItemNota item = getTableView().getItems().get(getIndex());
+                        cartManager.removeItem(item);
+                        if (cartManager.getCartItems().isEmpty()) {
+                            voltarParaCarrinho();
+                        }
+                    });
+                }
+                @Override public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setGraphic(empty ? null : btn);
+                }
+            };
+        };
+        colunaRemover.setCellFactory(cellFactory);
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML private void goToPaginaInicial() { TelaLogin.telaPrincipal(); }

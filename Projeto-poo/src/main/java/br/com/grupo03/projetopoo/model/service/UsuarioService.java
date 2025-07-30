@@ -13,7 +13,7 @@ import java.util.Objects;
 public class UsuarioService implements IUsuarioService {
     private final UsuarioDAO dao = new UsuarioDAO();
 
-    private void checkGerente() {
+    public static void checkGerente() {
         IUsuario logged = Session.getInstance().getLoggedUser();
         if (logged == null || logged.getTipo() != TipoUsuario.GERENTE) {
             throw new SecurityException("Apenas gerentes podem executar esta operação");

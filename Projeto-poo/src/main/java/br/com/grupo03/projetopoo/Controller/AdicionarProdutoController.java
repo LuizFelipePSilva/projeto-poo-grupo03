@@ -4,6 +4,7 @@ import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.service.TipoService;
+import br.com.grupo03.projetopoo.model.service.UsuarioService;
 import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -42,35 +43,18 @@ public class AdicionarProdutoController {
     /** ✅ Botão + para adicionar um novo tipo apenas com o nome */
     @FXML
     private void adicionarNovoTipo() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Novo Tipo");
-        dialog.setHeaderText("Adicionar novo tipo de produto");
-        dialog.setContentText("Digite o nome do novo tipo:");
-
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(nomeTipo -> {
-            if (nomeTipo.trim().isEmpty()) {
-                showAlert(Alert.AlertType.WARNING, "Tipo inválido", "O nome do tipo não pode estar vazio.");
-                return;
-            }
-
             try {
-                Tipo novoTipo = new Tipo();
-                novoTipo.setNome(nomeTipo.trim());
-                tipoService.saveTipo(novoTipo);
-                carregarTipos();
-                comboTipo.setValue(novoTipo.getNome());
-                showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Novo tipo adicionado com sucesso!");
+            TelaLogin.admin();
             } catch (RuntimeException e) {
                 showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível adicionar o tipo: " + e.getMessage());
             }
-        });
     }
 
     /** ✅ Salvar produto pegando o nome do tipo e convertendo para entidade */
     @FXML
     private void salvarProduto() {
         try {
+            UsuarioService.checkGerente();
             String marca = campoMarca.getText();
             String codigo = campoCodigoBarras.getText();
             double preco = Double.parseDouble(campoPreco.getText());

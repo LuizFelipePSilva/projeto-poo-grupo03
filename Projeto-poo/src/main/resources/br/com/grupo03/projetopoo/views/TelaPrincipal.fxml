@@ -29,7 +29,7 @@
             <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
             <Button maxWidth="Infinity" onAction="#abrirTelaProduto" styleClass="side-menu-button" text="Produtos" />
             <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
-            <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
+            <Button fx:id="btnAdmin" maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
             <Separator styleClass="separator" />
             <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
          </children>
@@ -109,7 +109,7 @@
                      </font></Label>
                </VBox>
 
-               <VBox alignment="CENTER" onMouseClicked="#paginaAdmin" spacing="15" styleClass="menu-item" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <VBox fx:id="boxAdmin" alignment="CENTER" onMouseClicked="#paginaAdmin" spacing="15" styleClass="menu-item" GridPane.columnIndex="1" GridPane.rowIndex="1">
                   <ImageView fitHeight="64" fitWidth="64" styleClass="menu-icon">
                      <image>
                         <Image url="@../../../../../images/img_4.png" />

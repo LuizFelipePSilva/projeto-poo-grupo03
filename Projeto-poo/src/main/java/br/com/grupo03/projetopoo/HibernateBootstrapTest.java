@@ -11,15 +11,10 @@ public class HibernateBootstrapTest {
 
         try {
             em.getTransaction().begin();
-
-            Tipo tipo = new Tipo(null, "Comida", FormaVenda.UNIDADE);
-            em.persist(tipo);
-
-            Produto produto = new Produto(null, "MarcaTeste", "123456789", 10.0, tipo);
-            em.persist(produto);
-
             Usuario usuario = new Usuario(null, "Admin", "admin", "senha123", TipoUsuario.GERENTE);
             em.persist(usuario);
+            Usuario usua = new Usuario(null, "Admin2", "admin2", "senha123", TipoUsuario.FUNCIONARIO);
+            em.persist(usua);
 
             em.getTransaction().commit();
 

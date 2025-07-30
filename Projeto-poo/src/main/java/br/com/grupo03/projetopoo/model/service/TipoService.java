@@ -62,4 +62,10 @@ public class TipoService implements TipoInterfaceService {
         }
         tipoDAO.save(tipo); // O DAO gerencia a persistência
     }
+    public void update(Tipo tipo) {
+        if (tipoDAO.findById(tipo.getId()) == null) {
+            throw new RuntimeException("Tipo não encontrado para atualização.");
+        }
+        tipoDAO.update(tipo);
+    }
 }

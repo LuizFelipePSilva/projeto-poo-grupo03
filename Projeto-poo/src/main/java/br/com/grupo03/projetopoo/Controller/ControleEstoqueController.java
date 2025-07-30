@@ -5,6 +5,7 @@ import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.model.entity.Tipo;
 import br.com.grupo03.projetopoo.model.service.ProdutoService;
 import br.com.grupo03.projetopoo.model.service.TipoService;
+import br.com.grupo03.projetopoo.model.service.UsuarioService;
 import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,15 +32,27 @@ public class ControleEstoqueController {
     @FXML private TableColumn<Produto, String> colTipo;
     @FXML private TableColumn<Produto, Void> colAcoes;
     @FXML private Label labelMensagem;
+    @FXML private Button btnAdicionar;
 
     private ObservableList<Produto> listaProdutos;
-
+    private boolean isGerente = false;
     @FXML
     public void initialize() {
+        try {
+            UsuarioService.checkGerente();
+            isGerente = true;
+        } catch (SecurityException e) {
+            isGerente = false;
+        }
+        btnAdicionar.setVisible(isGerente);
+        colAcoes.setVisible(isGerente);
+
         configurarColunas();
         carregarProdutos();
-        adicionarBotoesAcoes();
 
+        if (isGerente) {
+            adicionarBotoesAcoes();
+        }
         campoBusca.textProperty().addListener((obs, oldVal, newVal) -> filtrarProdutos(newVal));
     }
 
@@ -120,6 +133,7 @@ public class ControleEstoqueController {
     @FXML
     public void adicionarProduto() {
         try {
+            UsuarioService.checkGerente();
             TelaLogin telaLogin = new TelaLogin();
             telaLogin.adicionarProduto();
             carregarProdutos();
@@ -131,6 +145,7 @@ public class ControleEstoqueController {
 
     /** Alterar produto */
     private void abrirPopupAlterar(Produto produto) {
+        UsuarioService.checkGerente();
         Stage modal = new Stage();
         modal.initModality(Modality.APPLICATION_MODAL);
         modal.setTitle("Alterar Produto");
@@ -189,6 +204,7 @@ public class ControleEstoqueController {
 
     /** Excluir produto */
     private void confirmarExcluir(Produto produto) {
+        UsuarioService.checkGerente();
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Excluir Produto");
         alert.setHeaderText("Deseja excluir o produto da marca " + produto.getMarca() + "?");

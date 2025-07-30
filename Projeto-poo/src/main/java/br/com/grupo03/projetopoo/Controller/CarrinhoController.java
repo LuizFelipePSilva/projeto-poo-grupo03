@@ -2,48 +2,89 @@ package br.com.grupo03.projetopoo.Controller;
 
 import br.com.grupo03.projetopoo.model.entity.ItemNota;
 import br.com.grupo03.projetopoo.model.entity.Venda;
-import br.com.grupo03.projetopoo.model.service.VendaService;
 import br.com.grupo03.projetopoo.model.service.strategy.DiscountStrategy;
 import br.com.grupo03.projetopoo.model.service.strategy.FixedDiscountStrategy;
 import br.com.grupo03.projetopoo.model.service.strategy.NoDiscountStrategy;
 import br.com.grupo03.projetopoo.model.service.strategy.PercentageDiscountStrategy;
 import br.com.grupo03.projetopoo.util.CartManager;
+import br.com.grupo03.projetopoo.views.TelaLogin;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
-
+import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 
 public class CarrinhoController {
 
     @FXML private TableView<ItemNota> tabelaCarrinho;
     @FXML private TableColumn<ItemNota, String> colunaCodigo;
-    @FXML private TableColumn<ItemNota, String> colunaNome;
     @FXML private TableColumn<ItemNota, String> colunaMarca;
     @FXML private TableColumn<ItemNota, Double> colunaPreco;
     @FXML private TableColumn<ItemNota, Integer> colunaQuantidade;
+    @FXML private TableColumn<ItemNota, Void> colunaRemover;
     @FXML private TextField textFieldCupom;
+    @FXML private Label labelValorTotal;
 
-    private final VendaService vendaService = new VendaService();
     private final CartManager cartManager = CartManager.getInstance();
     private DiscountStrategy activeDiscountStrategy;
 
     @FXML
     public void initialize() {
         this.activeDiscountStrategy = new NoDiscountStrategy();
+
         colunaCodigo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getCodigoBarras()));
-        colunaNome.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca())); //ver isso aqui depois
         colunaMarca.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduto().getMarca()));
-        colunaPreco.setCellValueFactory(new PropertyValueFactory<>("valorUnitario"));
-        colunaQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+        colunaPreco.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getValorUnitario()));
+        colunaQuantidade.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getQuantidade()));
+
+        configureRemoveColumn();
         tabelaCarrinho.setItems(cartManager.getCartItems());
+
+        double totalWidth = 1;
+        colunaCodigo.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.20)); // 20%
+        colunaMarca.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.40));  // 40%
+        colunaPreco.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.15));   // 15%
+        colunaQuantidade.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.15)); // 15%
+        colunaRemover.prefWidthProperty().bind(tabelaCarrinho.widthProperty().multiply(totalWidth * 0.10)); // 10%
+
+        tabelaCarrinho.setItems(cartManager.getCartItems());
+
+        cartManager.getCartItems().addListener((ListChangeListener<ItemNota>) c -> updateTotalValue());
+        updateTotalValue();
+    }
+
+    private void configureRemoveColumn() {
+        Callback<TableColumn<ItemNota, Void>, TableCell<ItemNota, Void>> cellFactory = param -> {
+            return new TableCell<>() {
+                private final Button btn = new Button("Remover");
+                {
+                    btn.setOnAction((ActionEvent event) -> {
+                        ItemNota item = getTableView().getItems().get(getIndex());
+                        cartManager.removeItem(item);
+                    });
+                }
+                @Override
+                public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setGraphic(empty ? null : btn);
+                }
+            };
+        };
+        colunaRemover.setCellFactory(cellFactory);
+    }
+
+    private void updateTotalValue() {
+        double subtotal = cartManager.getCartItems().stream().mapToDouble(ItemNota::getValorTotal).sum();
+        double discount = activeDiscountStrategy.calculateDiscount(subtotal);
+        double finalTotal = subtotal - discount;
+        labelValorTotal.setText(String.format("Total: R$ %.2f", finalTotal));
     }
 
     @FXML
@@ -63,33 +104,35 @@ public class CarrinhoController {
                 showAlert(Alert.AlertType.WARNING, "Cupom Inválido", "O código do cupom inserido não é válido.");
                 break;
         }
+        updateTotalValue();
     }
 
     @FXML
-    protected void finalizarCompra() {
+    protected void irParaNotaFiscal() {
         if (cartManager.getCartItems().isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Carrinho Vazio", "Seu carrinho está vazio.");
             return;
         }
-        Map<Long, Integer> shoppingCartMap = new HashMap<>();
-        for (ItemNota item : cartManager.getCartItems()) {
-            shoppingCartMap.put(item.getProduto().getId(), item.getQuantidade());
-        }
         try {
-            Venda vendaRealizada = vendaService.performSale(shoppingCartMap, activeDiscountStrategy);
-            showAlert(Alert.AlertType.INFORMATION, "Compra Finalizada", "Sua compra foi realizada com sucesso!");
-            cartManager.clearCart();
-            abrirTelaNotaFiscal(vendaRealizada);
-        } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erro na Compra", "Houve um erro: " + e.getMessage());
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource("/br/com/grupo03/projetopoo/views/NotaFiscal.fxml")));
+            Parent notaFiscalView = loader.load();
+            NotaFiscalController controller = loader.getController();
+            controller.iniciarDados(cartManager.getCartItems(), activeDiscountStrategy);
+            BorderPane borderPane = (BorderPane) tabelaCarrinho.getScene().getRoot();
+            borderPane.setCenter(notaFiscalView);
+        } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível abrir a tela de nota fiscal.");
         }
     }
 
-    @FXML
-    protected void voltar() {
-        System.out.println("Botão Voltar clicado.");
-    }
+    @FXML private void goToPaginaInicial() { TelaLogin.telaPrincipal(); }
+    @FXML private void goToEstoque() { System.out.println("Navegando para Estoque..."); }
+    @FXML private void goToCarrinho() { TelaLogin.carrinho(); }
+    @FXML private void goToProdutos() { TelaLogin.buscarProdutos(); }
+    @FXML private void goToNotaFiscal() { TelaLogin.notaFiscal(); }
+    @FXML private void goToAdmin() { TelaLogin.admin(); }
+    @FXML private void sair() { TelaLogin.telaLogin(); }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -97,21 +140,5 @@ public class CarrinhoController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    private void abrirTelaNotaFiscal(Venda venda) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/grupo03/projetopoo/views/NotaFiscal.fxml"));
-            Parent root = loader.load();
-            NotaFiscalController controller = loader.getController();
-            controller.carregarDadosVenda(venda);
-            Stage stage = new Stage();
-            stage.setTitle("Nota Fiscal - Venda #" + venda.getId());
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível abrir a tela de nota fiscal.");
-        }
     }
 }

@@ -14,7 +14,7 @@ module br.com.grupo03.projetopoo {
     requires java.desktop;
 
     requires org.hibernate.orm.core;
-    opens br.com.grupo03.projetopoo.model.entity to org.hibernate.orm.core;
+    opens br.com.grupo03.projetopoo.model.entity to javafx.base, org.hibernate.orm.core;
     opens br.com.grupo03.projetopoo.Controller to javafx.fxml;
     exports br.com.grupo03.projetopoo.views;
     opens br.com.grupo03.projetopoo.views to javafx.fxml;

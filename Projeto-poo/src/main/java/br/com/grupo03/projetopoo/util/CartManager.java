@@ -19,6 +19,9 @@ public class CartManager {
         }
         return instance;
     }
+    public ObservableList<ItemNota> getCartItems() {
+        return cartItems;
+    }
 
     public void addItem(ItemNota itemParaAdicionar) {
         Produto produtoParaAdicionar = itemParaAdicionar.getProduto();

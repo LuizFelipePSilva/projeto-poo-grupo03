@@ -3,6 +3,8 @@ package br.com.grupo03.projetopoo.views;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -80,27 +82,15 @@ public class TelaLogin extends Application
     }
 
     public static void notaFiscal() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoe/views/NotaFiscal.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/NotaFiscal.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 1280, 720);
         } catch (IOException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
         stage.setTitle("Nota Fiscal");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void listaProdutos() {
-        FXMLLoader fxmlLoader = new FXMLLoader(TelaLogin.class.getResource("/br/com/grupo03/projetopoo/views/ListaProdutos.fxml"));
-        Scene scene = null;
-        try {
-            scene = new Scene(fxmlLoader.load(), 1185, 668); // mesmo tamanho que BuscarProdutos
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        stage.setTitle("Lista de Produtos");
         stage.setScene(scene);
         stage.show();
     }
@@ -117,6 +107,18 @@ public class TelaLogin extends Application
         stage.setScene(scene);
         stage.show();
     }
-
+    public void adicionarProduto() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/grupo03/projetopoo/views/AdicionarProduto.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load(), 1185, 668);
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Erro ao abrir tela de adicionar produto:\n" + e.getMessage()).showAndWait();
+        }
+        stage.setTitle("Adicionar Produto");
+        stage.setScene(scene);
+        stage.show();
+    }
 
 }

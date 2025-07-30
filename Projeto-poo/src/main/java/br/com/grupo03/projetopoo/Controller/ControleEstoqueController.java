@@ -3,6 +3,8 @@ package br.com.grupo03.projetopoo.Controller;
 import br.com.grupo03.projetopoo.model.dao.ProdutoDAO;
 import br.com.grupo03.projetopoo.model.entity.Produto;
 import br.com.grupo03.projetopoo.model.entity.Tipo;
+import br.com.grupo03.projetopoo.model.service.ProdutoService;
+import br.com.grupo03.projetopoo.model.service.TipoService;
 import br.com.grupo03.projetopoo.views.TelaLogin;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -94,17 +96,8 @@ public class ControleEstoqueController {
     @FXML
     public void adicionarProduto() {
         try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/br/com/grupo03/projetopoo/views/AdicionarProduto.fxml"));
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = new Stage();
-            stage.setTitle("Adicionar Produto");
-            stage.setScene(scene);
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            // Atualiza tabela depois que a tela fechar
+            TelaLogin telaLogin = new TelaLogin();
+            telaLogin.adicionarProduto();
             carregarProdutos();
 
         } catch (Exception e) {
@@ -140,18 +133,24 @@ public class ControleEstoqueController {
                 produto.setMarca(campoMarca.getText());
                 produto.setPreco(Double.parseDouble(campoPreco.getText()));
                 produto.setQuantidade(Integer.parseInt(campoQuantidade.getText()));
-                Tipo novoTipo = new Tipo();
-                novoTipo.setNome(campoTipo.getText());
-                produto.setTipo(novoTipo);
+                TipoService tipoService = new TipoService();
+                Tipo tipoExistente = tipoService.getByName(campoTipo.getText());
+
+                if (tipoExistente == null) {
+                    throw new IllegalArgumentException("Tipo não encontrado.");
+                }
+                produto.setTipo(tipoExistente);
 
                 // Atualiza tabela
                 tabelaEstoque.refresh();
                 modal.close();
-
-                // Aqui você pode chamar o DAO para salvar no banco
+                System.out.println(produto.toString());
+                ProdutoService produtoService = new ProdutoService();
+                produtoService.updateProduto(produto);
                 System.out.println("Produto atualizado: " + produto.getMarca());
 
             } catch (Exception ex) {
+                ex.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Erro ao salvar alterações: " + ex.getMessage()).showAndWait();
             }
         });
@@ -173,7 +172,9 @@ public class ControleEstoqueController {
             if (result == ButtonType.OK) {
                 tabelaEstoque.getItems().remove(produto);
                 System.out.println("Produto excluído: " + produto.getMarca());
-                // Aqui você pode chamar o DAO para remover do banco
+                ProdutoService produtoService = new ProdutoService();
+
+                produtoService.removeProduto(produto);
             }
         });
     }
@@ -184,4 +185,6 @@ public class ControleEstoqueController {
     public void paginaAdmin(){ TelaLogin.admin(); }
     public void goToCarrinho() { TelaLogin.carrinho(); }
     public void goToNotaFiscal(){ TelaLogin.notaFiscal(); }
+    public void goToProdutos() {TelaLogin.buscarProdutos();}
+    public void abrirControleEstoque() { TelaLogin.controleEstoque(); }
 }

@@ -19,5 +19,7 @@ public class TelaPrincipalController {
     public void abrirTelaProduto() { TelaLogin.buscarProdutos();}
     public void goToCarrinho() {TelaLogin.carrinho();}
     public void goToNotaFiscal() {TelaLogin.notaFiscal();}
+    public void abrirListaProdutos() { TelaLogin.listaProdutos();}
+    public void abrirControleEstoque() {TelaLogin.controleEstoque();}
 
 }

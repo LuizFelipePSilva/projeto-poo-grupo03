@@ -25,7 +25,7 @@
                 <Button maxWidth="Infinity" onAction="#paginaInicial" styleClass="side-menu-button" text="Página Inicial" />
                 <Button maxWidth="Infinity" onAction="#abrirControleEstoque" styleClass="side-menu-button" text="Estoque" />
                 <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
-                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Produtos" />
+                <Button maxWidth="Infinity" onAction="#goToProdutos" styleClass="side-menu-button" text="Produtos" />
                 <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
                 <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
                 <Separator styleClass="separator" />
@@ -53,7 +53,7 @@
             <HBox alignment="CENTER_RIGHT" spacing="15">
                 <!-- FXML atualizado -->
                 <Button fx:id="btnCarrinho" onAction="#goToCarrinho" style="-fx-background-color: #1c2541; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 6;" text="Ir para o carrinho" />
-                <Button fx:id="btnVoltar" onAction="#voltaTelaInicial" style="-fx-background-color: #3a3d5c; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 6;" text="Voltar" />
+                <Button fx:id="btnVoltar" style="-fx-background-color: #3a3d5c; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 6;" text="Voltar" />
             </HBox>
         </VBox>
     </center>

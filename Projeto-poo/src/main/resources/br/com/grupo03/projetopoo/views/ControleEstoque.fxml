@@ -23,9 +23,9 @@
                 <Label styleClass="side-menu-title" text="MERCADINHO" />
                 <Separator styleClass="separator" />
                 <Button maxWidth="Infinity" onAction="#paginaInicial" styleClass="side-menu-button" text="Página Inicial" />
-                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Estoque" />
+                <Button maxWidth="Infinity" onAction="#abrirControleEstoque" styleClass="side-menu-button" text="Estoque" />
                 <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
-                <Button maxWidth="Infinity" styleClass="side-menu-button" text="Produtos" />
+                <Button maxWidth="Infinity" onAction="#goToProdutos" styleClass="side-menu-button" text="Produtos" />
                 <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
                 <Button maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
                 <Separator styleClass="separator" />

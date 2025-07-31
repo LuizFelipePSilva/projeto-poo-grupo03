@@ -5,7 +5,7 @@ import br.com.grupo03.projetopoo.model.entity.interfaces.IUsuario;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "login"))
+@Table(name = "usuarios")
 public class Usuario implements IUsuario {
 
     @Id
@@ -15,7 +15,7 @@ public class Usuario implements IUsuario {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String login;
 
     @Column(nullable = false)
@@ -25,64 +25,37 @@ public class Usuario implements IUsuario {
     @Column(nullable = false)
     private TipoUsuario tipo;
 
-    public Usuario() {}
-
-    public Usuario(Long id, String nome, String login, String senha, TipoUsuario tipo) {
-        this.id = id;
-        setNome(nome);
-        setLogin(login);
-        setSenha(senha);
-        setTipo(tipo);
+    /**
+     * Construtor vazio.
+     * OBRIGATÓRIO para que o JPA/Hibernate funcione.
+     */
+    public Usuario() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        if (nome == null || nome.trim().isEmpty()) throw new IllegalArgumentException("Nome não pode ser vazio");
+    /**
+     * Construtor com parâmetros para facilitar a criação de novos usuários no código.
+     */
+    public Usuario(String nome, String login, String senha, TipoUsuario tipo) {
         this.nome = nome;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        if (login == null || login.trim().isEmpty()) throw new IllegalArgumentException("Login não pode ser vazio");
         this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        if (senha == null || senha.trim().isEmpty()) throw new IllegalArgumentException("Senha não pode ser vazia");
         this.senha = senha;
-    }
-
-    public TipoUsuario getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoUsuario tipo) {
-        if (tipo == null) throw new IllegalArgumentException("Tipo de usuário não pode ser nulo");
         this.tipo = tipo;
     }
 
+    // Getters e Setters...
     @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", login='" + login + '\'' +
-                ", senha='" + senha + '\'' +
-                ", tipo=" + tipo +
-                '}';
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    @Override
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    @Override
+    public String getLogin() { return login; }
+    public void setLogin(String login) { this.login = login; }
+    @Override
+    public String getSenha() { return senha; }
+    public void setSenha(String senha) { this.senha = senha; }
+    @Override
+    public TipoUsuario getTipo() { return tipo; }
+    public void setTipo(TipoUsuario tipo) { this.tipo = tipo; }
 }

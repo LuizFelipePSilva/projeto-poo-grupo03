@@ -76,6 +76,12 @@
                <Button fx:id="btnExcluirTipo" onAction="#excluirTipo" text="Excluir Selecionado" style="-fx-background-color: #c0392b;" textFill="white" styleClass="table-action-button" />
             </HBox>
          </VBox>
+         <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10; -fx-border-color: #ddd; -fx-border-radius: 10;">
+            <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1c2541;" text="Gerenciamento de Usuários" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <Button onAction="#abrirTelaCriarUsuario" text="Criar Novo Usuário" styleClass="table-action-button" />
+            </HBox>
+         </VBox>
       </VBox>
    </center>
 </BorderPane>

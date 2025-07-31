@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.grupo03.projetopoo.Controller.TelaCriarUsuarioController">
+
+    <left>
+        <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" styleClass="side-menu">
+            <padding>
+                <Insets bottom="20" left="10" right="10" top="20" />
+            </padding>
+            <children>
+                <Label styleClass="side-menu-title" text="MERCADINHO" />
+                <Separator styleClass="separator" />
+                <Button maxWidth="Infinity" onAction="#paginaInicial" styleClass="side-menu-button" text="Página Inicial" />
+                <Button maxWidth="Infinity" onAction="#abrirControleEstoque" styleClass="side-menu-button" text="Estoque" />
+                <Button maxWidth="Infinity" onAction="#goToCarrinho" styleClass="side-menu-button" text="Carrinho" />
+                <Button maxWidth="Infinity" onAction="#goToProdutos" styleClass="side-menu-button" text="Produtos" />
+                <Button maxWidth="Infinity" onAction="#goToNotaFiscal" styleClass="side-menu-button" text="Nota Fiscal" />
+                <Button fx:id="btnAdmin" maxWidth="Infinity" onAction="#paginaAdmin" styleClass="side-menu-button" text="Admin" />
+                <Separator styleClass="separator" />
+                <Button maxWidth="Infinity" onAction="#sair" styleClass="side-menu-button" text="Sair" />
+            </children>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="TOP_CENTER" styleClass="center-vbox" spacing="30">
+            <children>
+                <VBox alignment="CENTER" styleClass="login-box" spacing="25">
+                    <children>
+                        <Label styleClass="welcome-title" text="Criar Novo Usuário" />
+
+                        <GridPane hgap="15" vgap="20">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="RIGHT" prefWidth="120.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" prefWidth="280.0" />
+                            </columnConstraints>
+                            <children>
+                                <Label text="Nome:" styleClass="input-label" GridPane.rowIndex="0" />
+                                <Label text="Login:" styleClass="input-label" GridPane.rowIndex="1" />
+                                <Label text="Senha:" styleClass="input-label" GridPane.rowIndex="2" />
+                                <Label text="Tipo de Usuário:" styleClass="input-label" GridPane.rowIndex="3" />
+
+                                <TextField fx:id="nomeField" styleClass="login-field" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <TextField fx:id="loginField" styleClass="login-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <PasswordField fx:id="senhaField" styleClass="login-field" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <ComboBox fx:id="tipoUsuarioComboBox" prefWidth="Infinity" styleClass="login-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            </children>
+                        </GridPane>
+
+                        <HBox alignment="CENTER" spacing="15.0">
+                            <children>
+                                <Button onAction="#criarUsuario" text="Criar Usuário" styleClass="login-button" />
+                                <Button onAction="#cancelar" text="Cancelar" styleClass="form-button-cancel" />
+                            </children>
+                            <padding>
+                                <Insets top="10.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

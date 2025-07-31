@@ -72,5 +72,8 @@ public class TelaLogin extends Application {
             new Alert(Alert.AlertType.ERROR, "Erro ao abrir tela de adicionar produto:\n" + e.getMessage()).showAndWait();
         }
     }
+    public static void criarUsuario(){
+        carregarTela("/br/com/grupo03/projetopoo/views/TelaCriarUsuario.fxml", "Criar Usuario");
+    }
 }
 

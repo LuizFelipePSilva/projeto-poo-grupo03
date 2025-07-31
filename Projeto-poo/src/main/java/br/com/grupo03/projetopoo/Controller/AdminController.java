@@ -44,7 +44,10 @@ public class AdminController implements Initializable {
     private Button btnSalvarAlteracoesTipo;
     @FXML
     private Button btnExcluirTipo;
-
+    @FXML
+    private void abrirTelaCriarUsuario() {
+        TelaLogin.criarUsuario();
+    }
     private final ObservableList<Tipo> tiposData = FXCollections.observableArrayList();
 
     @Override

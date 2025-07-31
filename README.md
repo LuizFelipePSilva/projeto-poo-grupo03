@@ -65,3 +65,10 @@ Pronto o projeto estára rodando na sua maquina.
 cd ..
 docker-compose down
 ```
+
+## 🔐 Login e Usuários
+
+| Nome     | Login   | Senha     | Tipo Usuario |
+|:--------:|:--------|:----------|--------------|
+| Admin    | admin   | senha123  | Gerente      |
+| Admin2   | admin2  | senha2    | Funcionario  | 

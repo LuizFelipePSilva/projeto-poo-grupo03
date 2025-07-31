@@ -99,9 +99,10 @@ public class AdminController implements Initializable {
         try {
             UsuarioService.checkGerente();
             tipoSelecionado.setNome(campoNomeTipo.getText());
-            tipoService.update(tipoSelecionado); // ✨ **Ajuste necessário no seu DAO/Service**
-
-            tabelaTipos.refresh(); // Atualiza a linha na interface
+            tipoSelecionado.setFormaVenda(comboFormaVenda.getValue());
+            tipoService.update(tipoSelecionado);
+            System.out.println(tipoSelecionado.getFormaVenda());
+            tabelaTipos.refresh();
             limparCampos();
 
         } catch (Exception e) {

@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ControleEstoqueController {
 
@@ -36,6 +37,10 @@ public class ControleEstoqueController {
 
     private ObservableList<Produto> listaProdutos;
     private boolean isGerente = false;
+
+    // ✅ Instância do serviço de Tipo para ser reutilizada
+    private final TipoService tipoService = new TipoService();
+
     @FXML
     public void initialize() {
         try {
@@ -93,7 +98,7 @@ public class ControleEstoqueController {
                     .filter(p -> (p.getCodigoBarras() != null && p.getCodigoBarras().toLowerCase().contains(filtroLower)) ||
                             (p.getMarca() != null && p.getMarca().toLowerCase().contains(filtroLower)) ||
                             (p.getTipo() != null && p.getTipo().getNome().toLowerCase().contains(filtroLower)))
-                    .toList();
+                    .collect(Collectors.toList());
             tabelaEstoque.setItems(FXCollections.observableArrayList(filtrados));
         }
     }
@@ -158,12 +163,29 @@ public class ControleEstoqueController {
         TextField campoMarca = new TextField(produto.getMarca());
         TextField campoPreco = new TextField(String.valueOf(produto.getPreco()));
         TextField campoQuantidade = new TextField(String.valueOf(produto.getQuantidade()));
-        TextField campoTipo = new TextField(produto.getTipo() != null ? produto.getTipo().getNome() : "");
+
+        // ✅ MODIFICAÇÃO: Cria uma ComboBox para os tipos
+        ComboBox<String> comboTipo = new ComboBox<>();
+        try {
+            // Carrega os nomes dos tipos na ComboBox
+            List<String> nomesDosTipos = tipoService.getAll().stream()
+                    .map(Tipo::getNome)
+                    .collect(Collectors.toList());
+            comboTipo.setItems(FXCollections.observableArrayList(nomesDosTipos));
+        } catch (Exception e) {
+            exibirMensagem("Erro ao carregar tipos de produto.", true);
+        }
+
+        // Define o valor atual do produto na ComboBox
+        if (produto.getTipo() != null) {
+            comboTipo.setValue(produto.getTipo().getNome());
+        }
 
         grid.addRow(0, new Label("Marca:"), campoMarca);
         grid.addRow(1, new Label("Preço:"), campoPreco);
         grid.addRow(2, new Label("Quantidade:"), campoQuantidade);
-        grid.addRow(3, new Label("Tipo:"), campoTipo);
+        // ✅ MODIFICAÇÃO: Adiciona a ComboBox ao invés do TextField
+        grid.addRow(3, new Label("Tipo:"), comboTipo);
 
         Button btnSalvar = new Button("Salvar");
         btnSalvar.setOnAction(e -> {
@@ -172,16 +194,15 @@ public class ControleEstoqueController {
                 produto.setPreco(Double.parseDouble(campoPreco.getText()));
                 produto.setQuantidade(Integer.parseInt(campoQuantidade.getText()));
 
-                TipoService tipoService = new TipoService();
-                Tipo tipoExistente = tipoService.getByName(campoTipo.getText());
-
-                if (tipoExistente == null) {
-                    tipoExistente = new Tipo();
-                    tipoExistente.setNome(campoTipo.getText());
-                    tipoService.saveTipo(tipoExistente);
+                // ✅ MODIFICAÇÃO: Busca o objeto Tipo com base no nome selecionado na ComboBox
+                String nomeTipoSelecionado = comboTipo.getValue();
+                if (nomeTipoSelecionado != null && !nomeTipoSelecionado.isEmpty()) {
+                    Tipo tipoExistente = tipoService.getByName(nomeTipoSelecionado);
+                    produto.setTipo(tipoExistente);
+                } else {
+                    // Opcional: define como nulo se nada for selecionado
+                    produto.setTipo(null);
                 }
-
-                produto.setTipo(tipoExistente);
 
                 ProdutoService produtoService = new ProdutoService();
                 produtoService.updateProduto(produto);
@@ -191,13 +212,14 @@ public class ControleEstoqueController {
 
                 exibirMensagem("Produto atualizado com sucesso!", false);
             } catch (Exception ex) {
-                exibirMensagem("Erro ao salvar alterações: " + ex.getMessage(), true);
+                // Mostra a mensagem de erro na label principal
+                exibirMensagem("Erro ao salvar: " + ex.getMessage(), true);
             }
         });
 
         grid.add(btnSalvar, 1, 4);
 
-        Scene scene = new Scene(grid, 300, 250);
+        Scene scene = new Scene(grid, 350, 250);
         modal.setScene(scene);
         modal.showAndWait();
     }
